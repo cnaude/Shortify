@@ -1,0 +1,14 @@
+# default config.yml for Shortify by vemacs
+# website: http://dev.bukkit.org/server-mods/shortify/
+# sponsored by Nullblock
+# available values for shortener are: googl, tinyurl and isgd
+# the default shortener is isgd
+# we do not recommend tinyurl because it has high latency
+# for better uptime, use googl for the shortener
+# to get your API key (NOT oAUTH), see 
+# https://developers.google.com/url-shortener/v1/getting_started#auth
+# under "Acquiring and using an API key"
+# SHORTIFY WILL NOT WORK IF THE GOO.GL API KEY IS INVALID
+# to use googl, change both shortener and googAPI values
+shortener: isgd
+googAPI: none
