@@ -1,7 +1,7 @@
 # default config.yml for Shortify by vemacs
 # website: http://dev.bukkit.org/server-mods/shortify/
 # sponsored by Nullblock
-# available values for shortener are: googl, tinyurl and isgd
+# available values for shortener are: googl, bitly, tinyurl and isgd
 # the default shortener is isgd
 # we do not recommend tinyurl because it has high latency
 # for better uptime, use googl for the shortener
@@ -10,5 +10,11 @@
 # under "Acquiring and using an API key"
 # SHORTIFY WILL NOT WORK IF THE GOO.GL API KEY IS INVALID
 # to use googl, change both shortener and googAPI values
+# bit.ly is not recommended, as it is slow and downtime may be high
+# bitlyUSER should be the username you use to sign on to bit.ly
+# bitlyAPI value can be found at https://bitly.com/a/settings/advanced
+# click "show legacy API key", and copy and paste the value into bitlyAPI
 shortener: isgd
 googAPI: none
+bitlyUSER: none
+bitlyAPI: none

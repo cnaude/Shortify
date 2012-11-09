@@ -25,12 +25,23 @@ public class ShortifyListener implements Listener {
         		    Matcher m = p.matcher(message);  
         		    StringBuffer sb = new StringBuffer();  
             		String service = plugin.getConfig().getString("shortener");
-            		String googAPI = plugin.getConfig().getString("googAPI");
       		if(service.equals("googl")){
+        		String googAPI = plugin.getConfig().getString("googAPI");
         		    while (m.find())  
         		    {  
         		      m.appendReplacement(sb, "");  
         		      sb.append(Shortener.GetShortedGOOGL(m.group(1), googAPI));  
+        		    }  
+        		    m.appendTail(sb);  
+        		    e.setMessage(sb.toString());  
+        		}
+      		if(service.equals("bitly")){
+        		String bitlyAPI = plugin.getConfig().getString("bitlyAPI");
+        		String bitlyUSER = plugin.getConfig().getString("bitlyUSER");
+        		    while (m.find())  
+        		    {  
+        		      m.appendReplacement(sb, "");  
+        		      sb.append(Shortener.GetShortedBITLY(m.group(1), bitlyUSER, bitlyAPI));  
         		    }  
         		    m.appendTail(sb);  
         		    e.setMessage(sb.toString());  

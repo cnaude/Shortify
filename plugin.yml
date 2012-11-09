@@ -1,6 +1,6 @@
 name: Shortify
 main: com.nullblock.vemacs.Shortify.Shortify
-version: 1.2.1
-description: The most advanced URL shortener for Bukkit. A fast and configurable plugin that automatically uses goo.gl, TinyURL or is.gd to shorten all detected URLs in a player message.
+version: 1.2.2
+description: The most advanced URL shortener for Bukkit. A fast and configurable plugin that automatically uses goo.gl, bit.ly, TinyURL or is.gd to shorten all detected URLs in a player message.
 author: vemacs
 website: http://dev.bukkit.org/server-mods/shortify/

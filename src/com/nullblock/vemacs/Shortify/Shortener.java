@@ -55,6 +55,28 @@ public class Shortener {
 	    }
 		return inputLine;
 	}
+	public static String GetShortedBITLY(String toshort, String bitlyUSER, String bitlyAPI) {
+	    URL shorted = null;
+		try {
+			shorted = new URL("http://api.bit.ly/v3/shorten?login=" + bitlyUSER + "&apiKey=" + bitlyAPI + "&longUrl=" + toshort + "&format=txt");
+		} catch (MalformedURLException e1) {
+
+		}
+        String inputLine = null;
+        try {
+        BufferedReader in = new BufferedReader(
+        new InputStreamReader(shorted.openStream()));
+        while ((inputLine = in.readLine()) != null)
+    		return inputLine;
+        in.close();
+        }
+	    catch (IOException ex)
+	    {    
+	    	Bukkit.broadcastMessage("bit.ly was unable to shorten " + ChatColor.RED + toshort);
+	    	inputLine = toshort;
+	    }
+		return inputLine;
+	}
 
 public static String GetShortedGOOGL(String longUrl, String googAPI)
 	{

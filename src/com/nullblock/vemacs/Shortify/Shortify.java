@@ -10,6 +10,8 @@ public final class Shortify extends JavaPlugin {
         final FileConfiguration config = this.getConfig();
         config.addDefault("shortener", "isgd");
         config.addDefault("googAPI", "none");
+        config.addDefault("bitlyAPI", "none");
+        config.addDefault("bitlyUSER", "none");
         config.options().copyDefaults(true);
         saveConfig();
     }
