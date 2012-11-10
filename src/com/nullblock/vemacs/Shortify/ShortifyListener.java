@@ -3,6 +3,8 @@ package com.nullblock.vemacs.Shortify;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -17,53 +19,44 @@ public class ShortifyListener implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
  
+    private Shortener getShortener() {
+    	String service = plugin.getConfig().getString("shortener");
+    	if(service.equals("googl")) {
+    		return new ShortenerGooGl(plugin.getConfig().getString("googAPI"));
+    	}
+    	if(service.equals("bitly")) {
+    		return new ShortenerBitLy(plugin.getConfig().getString("bitlyUSER"), plugin.getConfig().getString("bitlyAPI"));
+    	}
+    	if(service.equals("tinyurl")) {
+    		return new ShortenerTinyUrl();
+    	}
+    	else {
+    		return new ShortenerIsGd();
+    	}
+    }
+    
         @EventHandler(priority = EventPriority.LOW)
         public void playerChat(AsyncPlayerChatEvent e){
         		String message = e.getMessage();
         		if(message.contains("http://") || message.contains("https://")) {       		    
-        		    Pattern p = Pattern.compile("(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?«»“”‘’]))");  
+        		    Pattern p = Pattern.compile("(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]))");  
         		    Matcher m = p.matcher(message);  
-        		    StringBuffer sb = new StringBuffer();  
-            		String service = plugin.getConfig().getString("shortener");
-      		if(service.equals("googl")){
-        		String googAPI = plugin.getConfig().getString("googAPI");
+        		    StringBuffer sb = new StringBuffer();
+        		    String urlTmp = "";
+        		    Shortener s = getShortener();
         		    while (m.find())  
-        		    {  
+        		    {
+        		      try {
+        		    	  urlTmp = s.getShortenedUrl(m.group(1));
+        		      } catch (ShortifyException e1) {
+        		    	  Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Warning: "+e1.getMessage());
+        		    	  urlTmp = m.group(1);
+        		      }
         		      m.appendReplacement(sb, "");  
-        		      sb.append(Shortener.GetShortedGOOGL(m.group(1), googAPI));  
+        		      sb.append(urlTmp);  
         		    }  
         		    m.appendTail(sb);  
-        		    e.setMessage(sb.toString());  
-        		}
-      		if(service.equals("bitly")){
-        		String bitlyAPI = plugin.getConfig().getString("bitlyAPI");
-        		String bitlyUSER = plugin.getConfig().getString("bitlyUSER");
-        		    while (m.find())  
-        		    {  
-        		      m.appendReplacement(sb, "");  
-        		      sb.append(Shortener.GetShortedBITLY(m.group(1), bitlyUSER, bitlyAPI));  
-        		    }  
-        		    m.appendTail(sb);  
-        		    e.setMessage(sb.toString());  
-        		}
-      			if(service.equals("tinyurl")){
-        		    while (m.find())  
-        		    {  
-        		      m.appendReplacement(sb, "");  
-        		      sb.append(Shortener.GetShortedTinyURL(m.group(1)));  
-        		    }  
-        		    m.appendTail(sb);  
-        		    e.setMessage(sb.toString());  
-        		}
-            		if(service.equals("isgd")){
-        		    while (m.find())  
-        		    {  
-        		      m.appendReplacement(sb, "");  
-        		      sb.append(Shortener.GetShortedISGD(m.group(1)));  
-        		    }  
-        		    m.appendTail(sb);  
-        		    e.setMessage(sb.toString());  
-        		}
+        		    e.setMessage(sb.toString());
         		}
         }
 }
