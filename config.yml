@@ -18,3 +18,4 @@ shortener: isgd
 googAPI: none
 bitlyUSER: none
 bitlyAPI: none
+minlength: 20

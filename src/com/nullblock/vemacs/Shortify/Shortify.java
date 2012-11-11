@@ -12,6 +12,7 @@ public final class Shortify extends JavaPlugin {
         config.addDefault("googAPI", "none");
         config.addDefault("bitlyAPI", "none");
         config.addDefault("bitlyUSER", "none");
+        config.addDefault("minlength", "20");
         config.options().copyDefaults(true);
         saveConfig();
     }

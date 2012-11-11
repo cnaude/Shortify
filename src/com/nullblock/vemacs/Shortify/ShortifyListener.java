@@ -44,10 +44,17 @@ public class ShortifyListener implements Listener {
         		    StringBuffer sb = new StringBuffer();
         		    String urlTmp = "";
         		    Shortener s = getShortener();
+        	    	String minlength = plugin.getConfig().getString("minlength");
+        		    int min = Integer.parseInt(minlength);
         		    while (m.find())  
         		    {
         		      try {
+        		    	  if(m.group(1).length() > min) {
         		    	  urlTmp = s.getShortenedUrl(m.group(1));
+        		    	  }
+        		    	  else {
+        		    		  urlTmp = m.group(1);
+        		    	  }
         		      } catch (ShortifyException e1) {
         		    	  Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Warning: "+e1.getMessage());
         		    	  urlTmp = m.group(1);

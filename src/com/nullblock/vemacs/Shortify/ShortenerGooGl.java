@@ -20,7 +20,7 @@ public class ShortenerGooGl implements Shortener {
 	    String shortUrl = "";
 	    try
 	    {
-	    	String googUrl = "https://www.googleapis.com/urlshortener/v1/url?shortUrl=http://goo.gl/fbsS&key=" + a;
+	    	String googUrl = "https://www.googleapis.com/urlshortener/v1/url?shortUrl=" + toshort + "&key=" + a;
 	        URLConnection conn = new URL(googUrl).openConnection();
 	        conn.setDoOutput(true);
 	        conn.setRequestProperty("Content-Type", "application/json");
