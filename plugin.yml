@@ -6,3 +6,11 @@ author: vemacs
 authors:
 - tuxed/minecrafter
 website: http://dev.bukkit.org/server-mods/shortify/
+permissions:
+    Shortify.*:
+        description: Gives access to all Shortify commands
+        children:
+            Shortify.shorten: true
+    Shortify.shorten:
+        description: Allows you to shorten a URL
+        default: true
