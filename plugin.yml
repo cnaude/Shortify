@@ -5,6 +5,7 @@ description: The most advanced URL shortener for Bukkit. A fast and configurable
 author: vemacs
 authors:
 - tuxed/minecrafter
+- Racorac
 website: http://dev.bukkit.org/server-mods/shortify/
 permissions:
     Shortify.*:
