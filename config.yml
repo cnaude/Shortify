@@ -14,7 +14,7 @@
 # bitlyUSER should be the username you use to sign on to bit.ly
 # bitlyAPI value can be found at https://bitly.com/a/settings/advanced
 # click "show legacy API key", and copy and paste the value into bitlyAPI
-# turlca has recieved only minimal testing and may be very high-latency
+# turlca has received only minimal testing and may be very high-latency
 shortener: isgd
 googAPI: none
 bitlyUSER: none

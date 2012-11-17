@@ -1,5 +1,7 @@
 package com.nullblock.vemacs.Shortify;
 
+import org.bukkit.Bukkit;
+
 
 public class ShortifyException extends Exception {
 
@@ -7,7 +9,7 @@ public class ShortifyException extends Exception {
 	String msg = "";
 	
 	public ShortifyException(String string) {
-		// TODO Auto-generated constructor stub
+		Bukkit.getServer().getLogger().info(string);
 	}
 
 	public String getMessage() {

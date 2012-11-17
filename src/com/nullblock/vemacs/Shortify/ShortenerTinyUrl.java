@@ -24,7 +24,7 @@ public class ShortenerTinyUrl implements Shortener {
         }
 	    catch (IOException ex)
 	    {    
-	    	throw new ShortifyException("Unable to shorten: "+ex.getMessage());
+	    	throw new ShortifyException("Unable to shorten via tinyurl.com: "+ex.getMessage());
 	    }
 		return inputLine;
 	}
