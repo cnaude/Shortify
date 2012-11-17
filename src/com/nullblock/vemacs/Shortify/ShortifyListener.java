@@ -50,7 +50,9 @@ public class ShortifyListener implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void playerChat(AsyncPlayerChatEvent e){
 		String message = e.getMessage();
-		if(message.contains("http://") || message.contains("https://")) {       		    
+		Player player = e.getPlayer();
+		if(message.contains("http://") || message.contains("https://")) { 
+		    //REGEX from Daring Fireball
 		    Pattern p = Pattern.compile("(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?������]))");  
 		    Matcher m = p.matcher(message);  
 		    StringBuffer sb = new StringBuffer();
@@ -61,7 +63,7 @@ public class ShortifyListener implements Listener {
 		    {
 		      try {
 		    	  urlTmp = m.group(1);
-		    	  if(urlTmp.length() > min) {
+		    	  if(urlTmp.length() > min && player.hasPermission("Shortify.shorten")) {
 		    		  urlTmp = shortener.getShortenedUrl(urlTmp);
 		    	  }
 		      } catch (ShortifyException e1) {
