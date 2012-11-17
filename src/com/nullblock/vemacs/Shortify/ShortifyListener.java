@@ -19,34 +19,31 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class ShortifyListener implements Listener {
  
     private Shortify plugin;
+    private Shortener shortener;
  
     public ShortifyListener(Shortify Shortify) {
         plugin = Shortify;
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
-    }
- 
-    private Shortener getShortener() {
     	String service = plugin.getConfig().getString("shortener");
     	if(service.equals("googl")) {
     		if(plugin.getConfig().getString("googAPI").equals("none")){
-            	return new ShortenerIsGd();
+            	shortener = new ShortenerIsGd();
             }
-    		return new ShortenerGooGl(plugin.getConfig().getString("googAPI"));
+    		shortener = new ShortenerGooGl(plugin.getConfig().getString("googAPI"));
     	}
     	if(service.equals("bitly")) {
     		if(plugin.getConfig().getString("bitlyUSER").equals("none") && plugin.getConfig().getString("bitlyAPI").equals("none")){
-    			return new ShortenerIsGd();
+    			shortener = new ShortenerIsGd();
     		}
-    		return new ShortenerBitLy(plugin.getConfig().getString("bitlyUSER"), plugin.getConfig().getString("bitlyAPI"));
+    		shortener = new ShortenerBitLy(plugin.getConfig().getString("bitlyUSER"), plugin.getConfig().getString("bitlyAPI"));
     	}
     	if(service.equals("tinyurl")) {
-    		return new ShortenerTinyUrl();
+    		shortener = new ShortenerTinyUrl();
     	}
     	if(service.equals("turlca")) {
-    		return new ShortenerTurlCa();
+    		shortener = new ShortenerTurlCa();
     	}
     	else {
-    		return new ShortenerIsGd();
+    		shortener = new ShortenerIsGd();
     	}
     }
     
@@ -65,7 +62,7 @@ public class ShortifyListener implements Listener {
 		      try {
 		    	  urlTmp = m.group(1);
 		    	  if(urlTmp.length() > min) {
-		    		  urlTmp = getShortener().getShortenedUrl(urlTmp);
+		    		  urlTmp = shortener.getShortenedUrl(urlTmp);
 		    	  }
 		      } catch (ShortifyException e1) {
 		    	  Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Warning: "+e1.getMessage());

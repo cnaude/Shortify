@@ -7,9 +7,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.nullblock.vemacs.Shortify.Updater.UpdateResult;
 
 public final class Shortify extends JavaPlugin {
+	
+	private ShortifyListener listener;
+	
     @Override
     public void onEnable() {
-        new ShortifyListener(this);
+        listener = new ShortifyListener(this);
+        getServer().getPluginManager().registerEvents(listener, this);
         final FileConfiguration config = this.getConfig();
         config.addDefault("shortener", "isgd");
         config.addDefault("googAPI", "none");
@@ -33,11 +37,12 @@ public final class Shortify extends JavaPlugin {
         	if(updater.getResult() == UpdateResult.SUCCESS) {
         		getLogger().info("An update (version "+updater.getLatestVersionString()+") of Shortify was found and installed. Please reload your server to use the new version.");
         	}
+        	updater = null;
         }
     }
     
     @Override
     public void onDisable() {        
-        
+        listener = null;
     }
 }
