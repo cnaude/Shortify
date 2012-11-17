@@ -20,3 +20,5 @@ googAPI: none
 bitlyUSER: none
 bitlyAPI: none
 minlength: 20
+# toggles if Shortify should automatically update
+auto-update: true
