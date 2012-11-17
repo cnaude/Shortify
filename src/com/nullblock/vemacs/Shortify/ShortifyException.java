@@ -9,7 +9,7 @@ public class ShortifyException extends Exception {
 	String msg = "";
 	
 	public ShortifyException(String string) {
-		Bukkit.getServer().getLogger().info(string);
+		Bukkit.broadcastMessage(string);
 	}
 
 	public String getMessage() {
