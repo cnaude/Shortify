@@ -29,7 +29,7 @@ public final class Shortify extends JavaPlugin {
         if(this.getConfig().getString("auto-update").equals("true")){
         	Updater updater = new Updater(this, "Shortify", this.getFile(), Updater.UpdateType.DEFAULT, false);
         	getLogger().info("The latest reviewed version of Shortify is " + updater.getLatestVersionString());
-        	getLogger().info("You are running version" + this.getDescription().getVersion());
+        	getLogger().info("You are running version " + this.getDescription().getVersion());
         }
         }
     }
