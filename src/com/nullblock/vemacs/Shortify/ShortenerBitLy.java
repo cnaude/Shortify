@@ -1,10 +1,13 @@
 package com.nullblock.vemacs.Shortify;
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 
 public class ShortenerBitLy implements Shortener {
 
@@ -19,7 +22,7 @@ public class ShortenerBitLy implements Shortener {
 	    String shortUrl = "";
 	    try
 	    {
-	    	String bitlyUrl = "http://api.bit.ly/v3/shorten?login=" + u + "&apiKey=" + a + "&longUrl=" + toshort "&format=json";
+	    	String bitlyUrl = "http://api.bit.ly/v3/shorten?login=" + u + "&apiKey=" + a + "&longUrl=" + toshort + "&format=json";
 	        URLConnection conn = new URL(bitlyUrl).openConnection();
 	        conn.setDoOutput(true);
 	        conn.setRequestProperty("Content-Type", "application/json");

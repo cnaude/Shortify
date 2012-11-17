@@ -1,5 +1,6 @@
 package com.nullblock.vemacs.Shortify;
 
+
 /**
  * URL shortener standard interface to handle using a URL shortening service to
  * shorten a URL.

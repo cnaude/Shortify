@@ -1,4 +1,10 @@
 package com.nullblock.vemacs.Shortify;
+
+/**
+ * Listener for Shortify
+ * By vemacs, some parts contributed by minecrafter
+ * 
+ */
  
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
