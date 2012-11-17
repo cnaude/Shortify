@@ -18,7 +18,7 @@ public final class Shortify extends JavaPlugin {
         config.options().copyDefaults(true);
         saveConfig();
         if(this.getConfig().getString("auto-update").equals("true")){
-        	Updater updater = new Updater(this, "slug", this.getFile(), Updater.UpdateType.DEFAULT, false);
+        	Updater updater = new Updater(this, "Shortify", this.getFile(), Updater.UpdateType.DEFAULT, false);
         	getLogger().info("The latest reviewed version of Shortify is " + updater.getLatestVersionString());
         }
     }
