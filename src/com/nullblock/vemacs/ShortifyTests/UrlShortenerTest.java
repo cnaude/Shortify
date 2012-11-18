@@ -3,8 +3,6 @@
  */
 package com.nullblock.vemacs.ShortifyTests;
 
-import static org.junit.Assert.*;
-
 import java.lang.reflect.InvocationTargetException;
 
 import org.junit.After;
