@@ -12,6 +12,7 @@ permissions:
         description: Allows the use of all Shortify functions
         children:
             shortify.shorten: true
+            shortify.admin: true
     shortify.shorten:
         description: Allows you to shorten a URL
         default: true
