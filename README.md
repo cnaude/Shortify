@@ -15,6 +15,7 @@ People need `shortify.shorten` in order to shorten URLs.
 
 Authors
 -------
+
 * vemacs - creator, lead
 * tuxed/minecrafter - caintainer, optimizer, tester
 * Racorac - maintainer, the guy who started this whole thing
