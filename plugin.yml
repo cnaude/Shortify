@@ -8,10 +8,10 @@ authors:
 - Racorac
 website: http://dev.bukkit.org/server-mods/shortify/
 permissions:
-    Shortify.*:
-        description: Gives access to all Shortify commands
+    shortify.*:
+        description: Allows the use of shortening a URL
         children:
-            Shortify.shorten: true
-    Shortify.shorten:
+            shortify.shorten: true
+    shortify.shorten:
         description: Allows you to shorten a URL
         default: true
