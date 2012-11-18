@@ -9,9 +9,15 @@ authors:
 website: http://dev.bukkit.org/server-mods/shortify/
 permissions:
     shortify.*:
-        description: Allows the use of shortening a URL
+        description: Allows the use of all Shortify functions
         children:
             shortify.shorten: true
     shortify.shorten:
         description: Allows you to shorten a URL
         default: true
+    shortify.admin:
+        description: Allows you to reload Shortify
+        default: op
+commands:
+    shortify:
+        description: Shortify administration command

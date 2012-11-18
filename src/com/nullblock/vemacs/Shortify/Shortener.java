@@ -1,10 +1,10 @@
 package com.nullblock.vemacs.Shortify;
 
 /**
- * URL shortener standard interface to handle using a URL shortening service to
- * shorten a URL.
+ * This is the standard interface used by Shortify to shorten URLs.
  * 
  * @author minecrafter
+ * @since 1.3.0
  */
 public interface Shortener {
 	/**
@@ -12,7 +12,7 @@ public interface Shortener {
 	 * 
 	 * @param toshort
 	 *            A long URL to shorten
-	 * @returns a String which is the shortened URL
+	 * @return a shortened URL
 	 * @throws ShortifyException
 	 *             for errors encountered
 	 */

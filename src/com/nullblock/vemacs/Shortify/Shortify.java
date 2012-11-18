@@ -1,6 +1,8 @@
 package com.nullblock.vemacs.Shortify;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -57,5 +59,30 @@ public final class Shortify extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		listener = null;
+	}
+
+	public boolean onCommand(CommandSender sender, Command command,
+			String commandLabel, String[] args) {
+		// Check for permissions
+		if (sender.hasPermission("shortify.admin")) {
+			sender.sendMessage(ChatColor.RED
+					+ "You do not have permission to administer Shortify.");
+			return true;
+		}
+		// Handle the command
+		// This is currently only /shortify reload
+		if (args.length > 0) {
+			if (args[0].equals("reload")) {
+				reloadConfig();
+				listener.reinitializeShortener();
+				sender.sendMessage(ChatColor.GREEN
+						+ "Shortify has been reloaded.");
+			} else {
+				sender.sendMessage("/shortify reload");
+			}
+		} else {
+			sender.sendMessage("/shortify reload");
+		}
+		return true;
 	}
 }
