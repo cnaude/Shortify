@@ -6,6 +6,7 @@ package com.nullblock.vemacs.Shortify;
  * 
  */
 
+import java.io.UnsupportedEncodingException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,8 +53,8 @@ public class ShortifyListener implements Listener {
 	@EventHandler(priority = EventPriority.LOW)
 	public void playerChat(AsyncPlayerChatEvent e) {
 		String message = e.getMessage();
+		//regex operations aren't that expensive, now www. to www999. URLs should be shortened
 		if (e.getPlayer().hasPermission("shortify.shorten")) {
-			if (message.contains("http://") || message.contains("https://")) {
 				// REGEX from Daring Fireball
 				Pattern p = Pattern
 						.compile("(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?������]))");
@@ -66,7 +67,12 @@ public class ShortifyListener implements Listener {
 					try {
 						urlTmp = m.group(1);
 						if (urlTmp.length() > min) {
-							urlTmp = shortener.getShortenedUrl(urlTmp);
+							try {
+								urlTmp = shortener.getShortenedUrl(java.net.URLEncoder.encode(urlTmp, "UTF-8"));
+								//might as well put the encoder in the listener to prevent possible injections
+							} catch (UnsupportedEncodingException e1) {
+								//do absolutely nothing
+							}
 						}
 					} catch (ShortifyException e1) {
 						Bukkit.getConsoleSender().sendMessage(
@@ -80,4 +86,3 @@ public class ShortifyListener implements Listener {
 			}
 		}
 	}
-}

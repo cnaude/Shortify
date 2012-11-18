@@ -44,7 +44,8 @@ public class UrlShortenerTest {
 			// Attempt to shorten
 			shortener = (Shortener) shorteners[i].getConstructor().newInstance();
 			try {
-				System.out.println("Shortener "+shorteners[i].getName() + ": " + shortener.getShortenedUrl("http://dev.bukkit.org/server-mods/shortify/"));
+				System.out.println("Shortener "+shorteners[i].getName() + ": " + shortener.getShortenedUrl("http://dev.bukkit.org/server-mods/shortify/#encodingtest"));
+					//added testing for proper encoding
 			} catch (ShortifyException e) {
 				System.out.println("Shortener "+shorteners[i].getName() + " not working? Error: "+e.getMessage());
 			}
