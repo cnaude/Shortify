@@ -6,12 +6,12 @@ The most advanced URL shortener for Bukkit. A fast and configurable plugin that 
 Configuration
 -------------
 
-The configuration can be found in 'plugins/Shortify/config.yml'.
+The configuration can be found in `plugins/Shortify/config.yml`.
 
 Permissions
 -----------
 
-People need 'shortify.shorten' in order to shorten URLs.
+People need `shortify.shorten` in order to shorten URLs.
 
 Authors
 -------
