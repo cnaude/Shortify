@@ -34,6 +34,16 @@ public final class Shortify extends JavaPlugin {
 			getLogger().info(
 					ChatColor.RED + "Reverting to default shortener is.gd.");
 		}
+		if (this.getConfig().getString("shortener").equals("yourls")
+				&& this.getConfig().getString("yourlsUSER").equals("none")
+				&& this.getConfig().getString("yourlsURI").equals("none")
+				&& this.getConfig().getString("yourlsPASS").equals("none")) {
+			getLogger()
+					.info(ChatColor.RED
+							+ "YOURLS is not properly configured, see config.yml for details.");
+			getLogger().info(
+					ChatColor.RED + "Reverting to default shortener is.gd.");
+		}
 		if (this.getConfig().getString("shortener").equals("googl")
 				&& this.getConfig().getString("googAPI").equals("none")) {
 			getLogger()

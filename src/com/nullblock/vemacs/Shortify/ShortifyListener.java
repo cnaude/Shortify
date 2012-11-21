@@ -46,6 +46,19 @@ public class ShortifyListener implements Listener {
 						"bitlyUSER"), plugin.getConfig().getString("bitlyAPI"));
 			}
 		}
+		if (service.equals("yourls")) {
+			if (plugin.getConfig().getString("yourlsURI").equals("none")
+					&& plugin.getConfig().getString("yourlsUSER")
+							.equals("none")
+					&& plugin.getConfig().getString("yourlsPASS")
+							.equals("none")) {
+				shortener = new ShortenerIsGd();
+			} else {
+				shortener = new ShortenerYourls(plugin.getConfig().getString(
+						"yourlsURI"), plugin.getConfig().getString("yourlsUSER"),
+						plugin.getConfig().getString("yourlsPASS"));
+			}
+		}
 		if (service.equals("tinyurl")) {
 			shortener = new ShortenerTinyUrl();
 		}
