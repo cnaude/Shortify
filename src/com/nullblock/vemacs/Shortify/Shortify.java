@@ -11,11 +11,18 @@ import com.nullblock.vemacs.Shortify.Updater.UpdateResult;
 public final class Shortify extends JavaPlugin {
 
 	private ShortifyListener listener;
+	private ShortifyClassicListener listener;
 
 	@Override
 	public void onEnable() {
-		listener = new ShortifyListener(this);
-		getServer().getPluginManager().registerEvents(listener, this);
+		if (this.getConfig().getString("mode").equals("replace"){
+			listener = new ShortifyListener(this);
+			getServer().getPluginManager().registerEvents(listener, this);
+		}
+		if (this.getConfig().getString("mode").equals("classic"){
+			listener = new ShortifyClassicListener(this);
+			getServer().getPluginManager().registerEvents(listener, this);
+		}
 		final FileConfiguration config = this.getConfig();
 		config.addDefault("shortener", "isgd");
 		config.addDefault("googAPI", "none");
