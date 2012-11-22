@@ -39,7 +39,7 @@ public class ShortifyListener implements Listener {
 		}
 		if (service.equals("bitly")) {
 			if (plugin.getConfig().getString("bitlyUSER").equals("none")
-					&& plugin.getConfig().getString("bitlyAPI").equals("none")) {
+					|| plugin.getConfig().getString("bitlyAPI").equals("none")) {
 				shortener = new ShortenerIsGd();
 			} else {
 				shortener = new ShortenerBitLy(plugin.getConfig().getString(
@@ -48,15 +48,16 @@ public class ShortifyListener implements Listener {
 		}
 		if (service.equals("yourls")) {
 			if (plugin.getConfig().getString("yourlsURI").equals("none")
-					&& plugin.getConfig().getString("yourlsUSER")
+					|| plugin.getConfig().getString("yourlsUSER")
 							.equals("none")
-					&& plugin.getConfig().getString("yourlsPASS")
+					|| plugin.getConfig().getString("yourlsPASS")
 							.equals("none")) {
 				shortener = new ShortenerIsGd();
 			} else {
 				shortener = new ShortenerYourls(plugin.getConfig().getString(
-						"yourlsURI"), plugin.getConfig().getString("yourlsUSER"),
-						plugin.getConfig().getString("yourlsPASS"));
+						"yourlsURI"), plugin.getConfig()
+						.getString("yourlsUSER"), plugin.getConfig().getString(
+						"yourlsPASS"));
 			}
 		}
 		if (service.equals("tinyurl")) {

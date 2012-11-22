@@ -33,8 +33,8 @@ public final class Shortify extends JavaPlugin {
 		config.options().copyDefaults(true);
 		saveConfig();
 		if (this.getConfig().getString("shortener").equals("bitly")
-				&& this.getConfig().getString("bitlyUSER").equals("none")
-				&& this.getConfig().getString("bitlyAPI").equals("none")) {
+				|| this.getConfig().getString("bitlyUSER").equals("none")
+				|| this.getConfig().getString("bitlyAPI").equals("none")) {
 			getLogger()
 					.info(ChatColor.RED
 							+ "bit.ly is not properly configured, see config.yml for details.");
@@ -42,9 +42,9 @@ public final class Shortify extends JavaPlugin {
 					ChatColor.RED + "Reverting to default shortener is.gd.");
 		}
 		if (this.getConfig().getString("shortener").equals("yourls")
-				&& this.getConfig().getString("yourlsUSER").equals("none")
-				&& this.getConfig().getString("yourlsURI").equals("none")
-				&& this.getConfig().getString("yourlsPASS").equals("none")) {
+				|| this.getConfig().getString("yourlsUSER").equals("none")
+				|| this.getConfig().getString("yourlsURI").equals("none")
+				|| this.getConfig().getString("yourlsPASS").equals("none")) {
 			getLogger()
 					.info(ChatColor.RED
 							+ "YOURLS is not properly configured, see config.yml for details.");
@@ -52,7 +52,7 @@ public final class Shortify extends JavaPlugin {
 					ChatColor.RED + "Reverting to default shortener is.gd.");
 		}
 		if (this.getConfig().getString("shortener").equals("googl")
-				&& this.getConfig().getString("googAPI").equals("none")) {
+				|| this.getConfig().getString("googAPI").equals("none")) {
 			getLogger()
 					.info(ChatColor.RED
 							+ "goo.gl is not properly configured, see config.yml for details.");
