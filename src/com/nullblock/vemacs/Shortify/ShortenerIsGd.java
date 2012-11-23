@@ -3,6 +3,7 @@ package com.nullblock.vemacs.Shortify;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -24,8 +25,13 @@ public class ShortenerIsGd implements Shortener {
 				return inputLine;
 			in.close();
 		} catch (IOException ex) {
-			throw new ShortifyException("Unable to shorten via is.gd: "
-					+ ex.getMessage());
+			try {
+				String decoded = java.net.URLDecoder.decode(toshort, "UTF-8");
+				throw new ShortifyException("Unable to shorten via is.gd: "
+						+ decoded);
+			} catch (UnsupportedEncodingException e) {
+			}
+
 		}
 		return inputLine;
 	}
