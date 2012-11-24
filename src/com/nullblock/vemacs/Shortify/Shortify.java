@@ -63,7 +63,7 @@ public final class Shortify extends JavaPlugin {
 					Updater.UpdateType.DEFAULT, false);
 			if (updater.getResult() == UpdateResult.SUCCESS) {
 				getLogger()
-						.info("An update (version "
+						.info(ChatColor.GREEN + "An update (version "
 								+ updater.getLatestVersionString()
 								+ ") of Shortify was found and installed. Please restart your server to use the new version.");
 			}
