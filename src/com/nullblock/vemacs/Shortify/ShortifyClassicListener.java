@@ -56,8 +56,9 @@ public class ShortifyClassicListener implements Listener {
 				shortener = new ShortenerIsGd();
 			} else {
 				shortener = new ShortenerYourls(plugin.getConfig().getString(
-						"yourlsURI"), plugin.getConfig().getString("yourlsUSER"),
-						plugin.getConfig().getString("yourlsPASS"));
+						"yourlsURI"), plugin.getConfig()
+						.getString("yourlsUSER"), plugin.getConfig().getString(
+						"yourlsPASS"));
 			}
 		}
 		if (service.equals("tinyurl")) {

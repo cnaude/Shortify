@@ -30,42 +30,28 @@ public class ShortifyListener implements Listener {
 	protected void reinitializeShortener() {
 		String service = plugin.getConfig().getString("shortener");
 		if (service.equals("googl")) {
-			if (plugin.getConfig().getString("googAPI").equals("none")) {
-				shortener = new ShortenerIsGd();
-			} else {
-				shortener = new ShortenerGooGl(plugin.getConfig().getString(
-						"googAPI"));
-			}
+			shortener = new ShortenerGooGl(plugin.getConfig().getString(
+					"googAPI"));
 		}
 		if (service.equals("bitly")) {
-			if (plugin.getConfig().getString("bitlyUSER").equals("none")
-					|| plugin.getConfig().getString("bitlyAPI").equals("none")) {
-				shortener = new ShortenerIsGd();
-			} else {
-				shortener = new ShortenerBitLy(plugin.getConfig().getString(
-						"bitlyUSER"), plugin.getConfig().getString("bitlyAPI"));
-			}
+			shortener = new ShortenerBitLy(plugin.getConfig().getString(
+					"bitlyUSER"), plugin.getConfig().getString("bitlyAPI"));
 		}
 		if (service.equals("yourls")) {
-			if (plugin.getConfig().getString("yourlsURI").equals("none")
-					|| plugin.getConfig().getString("yourlsUSER")
-							.equals("none")
-					|| plugin.getConfig().getString("yourlsPASS")
-							.equals("none")) {
-				shortener = new ShortenerIsGd();
-			} else {
-				shortener = new ShortenerYourls(plugin.getConfig().getString(
-						"yourlsURI"), plugin.getConfig()
-						.getString("yourlsUSER"), plugin.getConfig().getString(
-						"yourlsPASS"));
-			}
+			shortener = new ShortenerYourls(plugin.getConfig().getString(
+					"yourlsURI"), plugin.getConfig().getString("yourlsUSER"),
+					plugin.getConfig().getString("yourlsPASS"));
 		}
 		if (service.equals("tinyurl")) {
 			shortener = new ShortenerTinyUrl();
 		}
 		if (service.equals("turlca")) {
 			shortener = new ShortenerTurlCa();
-		} else {
+		}
+		if (service.equals("isgd")) {
+			shortener = new ShortenerIsGd();
+		}
+		if(shortener == null) {
 			shortener = new ShortenerIsGd();
 		}
 	}
