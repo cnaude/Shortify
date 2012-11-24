@@ -68,7 +68,7 @@ public final class Shortify extends JavaPlugin {
 					Updater.UpdateType.DEFAULT, false);
 			if (updater.getResult() == UpdateResult.SUCCESS) {
 				getLogger()
-						.info("An update (version "
+						.info(ChatColor.GREEN + "An update (version "
 								+ updater.getLatestVersionString()
 								+ ") of Shortify was found and installed. Please restart your server to use the new version.");
 			}
@@ -85,8 +85,8 @@ public final class Shortify extends JavaPlugin {
 			String commandLabel, String[] args) {
 		// Check for permissions
 		if (sender.hasPermission("shortify.admin")) {
-			sender.sendMessage(ChatColor.RED
-					+ "You do not have permission to administer Shortify.");
+			sender.sendMessage(ChatColor.DARK_RED
+					+ "You don't have permission to do this.");
 			return true;
 		}
 		// Handle the command
