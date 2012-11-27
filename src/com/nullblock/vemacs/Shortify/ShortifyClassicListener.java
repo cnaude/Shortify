@@ -103,10 +103,8 @@ public class ShortifyClassicListener implements Listener {
 					Bukkit.getConsoleSender().sendMessage(
 							ChatColor.RED + "Warning: " + e1.getMessage());
 				}
-				m.appendReplacement(sb, "");
 				sb.append(urlTmp);
 			}
-			m.appendTail(sb);
 			e.setMessage(sb.toString());
 		}
 	}
