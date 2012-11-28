@@ -3,27 +3,24 @@ package com.nullblock.vemacs.Shortify;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class URLReader {
-	public String getShortenedUrl(String toread, String service) throws ShortifyException {
-		URL shorted = null;
-		try {
-			shorted = new URL(toread);
-		} catch (MalformedURLException e1) {
-
-		}
+	public static BufferedReader getUrl(String toread) throws IOException {
+		return new BufferedReader(new InputStreamReader(
+					new URL(toread).openStream()));
+	}
+	
+	public static String getUrlSimple(String uri, String srv) throws ShortifyException {
 		String inputLine = null;
 		try {
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					shorted.openStream()));
+			BufferedReader in = URLReader.getUrl(uri);
 			while ((inputLine = in.readLine()) != null)
 				return inputLine;
 			in.close();
 		} catch (IOException ex) {
-			throw new ShortifyException("Unable to shorten via " + service + ": "
-					+ toread);
+			throw new ShortifyException("Unable to shorten via is.gd: "
+					+ ex.getMessage());
 		}
 		return inputLine;
 	}

@@ -2,9 +2,6 @@ package com.nullblock.vemacs.Shortify;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class ShortenerYourls implements Shortener {
 
@@ -20,18 +17,11 @@ public class ShortenerYourls implements Shortener {
 
 	@Override
 	public String getShortenedUrl(String toshort) throws ShortifyException {
-		URL shorted = null;
 		try {
-			shorted = new URL(yourls_apiuri + "?username=" + yourls_apiuser
+			BufferedReader in = URLReader.getUrl(yourls_apiuri + "?username=" + yourls_apiuser
 					+ "&password=" + yourls_apipass + "&action=shorturl&url="
 					+ toshort + "&format=simple");
-		} catch (MalformedURLException e1) {
-
-		}
-		String inputLine = null;
-		try {
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					shorted.openStream()));
+			String inputLine;
 			// YOURLS may output an XML document instead of an URL.
 			while ((inputLine = in.readLine()) != null) {
 				if (inputLine.startsWith("<?xml")) {
