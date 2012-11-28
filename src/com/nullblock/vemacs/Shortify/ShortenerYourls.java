@@ -32,6 +32,7 @@ public class ShortenerYourls implements Shortener {
 		try {
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					shorted.openStream()));
+			// with the encoding in the listener, should we make YOURLS reference URLReader?
 			// YOURLS may output an XML document instead of an URL.
 			while ((inputLine = in.readLine()) != null) {
 				if (inputLine.startsWith("<?xml")) {
