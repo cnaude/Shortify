@@ -19,7 +19,7 @@ public class URLReader {
 				return inputLine;
 			in.close();
 		} catch (IOException ex) {
-			throw new ShortifyException("Unable to shorten via is.gd: "
+			throw new ShortifyException("Unable to shorten via "+srv+": "
 					+ ex.getMessage());
 		}
 		return inputLine;
