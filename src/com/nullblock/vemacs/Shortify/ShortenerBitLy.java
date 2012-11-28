@@ -16,26 +16,10 @@ public class ShortenerBitLy implements Shortener {
 	}
 
 	public String getShortenedUrl(String toshort) throws ShortifyException {
-		URL shorted = null;
-		try {
-
-			shorted = new URL("http://api.bit.ly/v3/shorten?login=" + u
-					+ "&apiKey=" + a + "&longUrl=" + toshort + "&format=txt");
-		} catch (MalformedURLException e1) {
-
-		}
-		String inputLine = null;
-		try {
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					shorted.openStream()));
-			while ((inputLine = in.readLine()) != null)
-				return inputLine;
-			in.close();
-		} catch (IOException ex) {
-			throw new ShortifyException("Unable to shorten via bit.ly: "
-					+ ex.getMessage());
-		}
-		return inputLine;
+		String toread = "http://api.bit.ly/v3/shorten?login=" + u
+					+ "&apiKey=" + a + "&longUrl=" + toshort + "&format=txt";
+		String shortened = URLReader.getShortenedUrl(toread, "bit.ly");
+		return shortened;
 	}
 
 }
