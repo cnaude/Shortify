@@ -1,11 +1,11 @@
-package com.nullblock.vemacs.Shortify;
+package com.nullblock.vemacs.Shortify.platforms.bukkit;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.nullblock.vemacs.Shortify.Updater.UpdateResult;
+import com.nullblock.vemacs.Shortify.platforms.bukkit.Updater.UpdateResult;
 
 public final class Shortify extends JavaPlugin {
 
@@ -92,7 +92,6 @@ public final class Shortify extends JavaPlugin {
 			if (args[0].equals("reload")) {
 				reloadConfig();
 				simpleReload();
-				listener.reinitializeShortener();
 				sender.sendMessage(ChatColor.GREEN
 						+ "Shortify has been reloaded.");
 			} else {

@@ -1,4 +1,4 @@
-package com.nullblock.vemacs.Shortify;
+package com.nullblock.vemacs.Shortify.platforms.bukkit;
 
 /**
  * Listener for Shortify (classic mode)
@@ -18,62 +18,22 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class ShortifyClassicListener implements Listener {
+import com.nullblock.vemacs.Shortify.GenericShortifyListener;
+import com.nullblock.vemacs.Shortify.Shortener;
+import com.nullblock.vemacs.Shortify.ShortifyException;
+
+public class ShortifyClassicListener extends GenericShortifyListener implements Listener {
 
 	private Shortify plugin;
-	private Shortener shortener;
-
+	
 	public ShortifyClassicListener(Shortify Shortify) {
 		plugin = Shortify;
-		reinitializeShortener();
-	}
-
-	protected void reinitializeShortener() {
-		String service = plugin.getConfig().getString("shortener");
-		if (service.equals("googl")) {
-			if (plugin.getConfig().getString("googAPI").equals("none")) {
-				shortener = new ShortenerIsGd();
-			} else {
-				shortener = new ShortenerGooGl(plugin.getConfig().getString(
-						"googAPI"));
-			}
-		}
-		if (service.equals("bitly")) {
-			if (plugin.getConfig().getString("bitlyUSER").equals("none")
-					|| plugin.getConfig().getString("bitlyAPI").equals("none")) {
-				shortener = new ShortenerIsGd();
-			} else {
-				shortener = new ShortenerBitLy(plugin.getConfig().getString(
-						"bitlyUSER"), plugin.getConfig().getString("bitlyAPI"));
-			}
-		}
-		if (service.equals("yourls")) {
-			if (plugin.getConfig().getString("yourlsURI").equals("none")
-					|| plugin.getConfig().getString("yourlsUSER")
-							.equals("none")
-					|| plugin.getConfig().getString("yourlsPASS")
-							.equals("none")) {
-				shortener = new ShortenerIsGd();
-			} else {
-				shortener = new ShortenerYourls(plugin.getConfig().getString(
-						"yourlsURI"), plugin.getConfig()
-						.getString("yourlsUSER"), plugin.getConfig().getString(
-						"yourlsPASS"));
-			}
-		}
-		if (service.equals("tinyurl")) {
-			shortener = new ShortenerTinyUrl();
-		}
-		if (service.equals("turlca")) {
-			shortener = new ShortenerTurlCa();
-		} else {
-			shortener = new ShortenerIsGd();
-		}
 	}
 
 	@EventHandler(priority = EventPriority.LOW)
 	public void playerChat(AsyncPlayerChatEvent e) {
 		String message = e.getMessage();
+		Shortener shortener = BukkitShared.getShortener(plugin);
 		// regex operations aren't that expensive, now www. to www9s99. URLs
 		// should be shortened
 		if (e.getPlayer().hasPermission("shortify.shorten")) {
