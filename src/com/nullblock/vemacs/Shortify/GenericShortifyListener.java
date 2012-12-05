@@ -16,7 +16,7 @@ public class GenericShortifyListener {
 	 * Shorten all URLs in a String.
 	 * @throws ShortifyException 
 	 */
-	protected String shortenAll(String txt, Integer minln, Shortener shortener) throws ShortifyException {
+	public static String shortenAll(String txt, Integer minln, Shortener shortener) throws ShortifyException {
 		// From Daring Fireball
 		Pattern p = Pattern
 				.compile("(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?������]))");
@@ -25,7 +25,7 @@ public class GenericShortifyListener {
 		String urlTmp = "";
 		while (m.find()) {
 			urlTmp = m.group(1);
-			if (urlTmp.length() > minln) {
+			if (urlTmp.length() >= minln) {
 				try {
 					urlTmp = shortener
 							.getShortenedUrl(java.net.URLEncoder
@@ -39,6 +39,7 @@ public class GenericShortifyListener {
 			m.appendReplacement(sb, "");
 			sb.append(urlTmp);
 		}
+		m.appendTail(sb);
 		return sb.toString();
 	}
 }

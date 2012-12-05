@@ -87,6 +87,30 @@ public class UrlShortenerTest {
 					.newInstance();
 			doShortenerTest();
 		}
+	}
+	@Test
+	public void messageTest() {
+		System.out.println("--- Event handler testing");
+		System.out.println("--- Event handler testing: Message with URL");
+		// With is.gd, attempt shortening a message.
+		try {
+			if(!GenericShortifyListener.shortenAll("This is a sample text and should point to a Google query for Shortify: http://www.google.com/search?q=Shortify", 1, new ShortenerIsGd()).startsWith("This is a sample text and should point to a Google query for Shortify: http://is.gd/")) {
+				fail("Message didn't shorten! (Bug?)");
+			}
+		} catch (ShortifyException e) {
+			fail("Couldn't shorten message!"
+					+ " is.gd returned an error: " + e.getMessage());
+		}
+		System.out.println("--- Event handler testing: Message without URL");
+		// Try shortening a message without a URL in it.
+		try {
+			if(!GenericShortifyListener.shortenAll("This is a sample text without any URLs.", 1, new ShortenerIsGd()).startsWith("This is a sample text without any URLs.")) {
+				fail("Message didn't shorten! (Bug?)");
+			}
+		} catch (ShortifyException e) {
+			fail("Couldn't shorten message!"
+					+ " is.gd returned an error: " + e.getMessage());
+		}
 		// Now test URL shorteners with required configuration
 		// We'll be reading from a .properties file
 		System.out.println("---- Specially configured shorteners");
