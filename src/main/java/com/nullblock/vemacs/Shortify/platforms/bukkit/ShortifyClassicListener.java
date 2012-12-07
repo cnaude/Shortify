@@ -68,7 +68,7 @@ public class ShortifyClassicListener extends GenericShortifyListener implements 
 				sb.append(urlTmp);
 			}
 			m.appendTail(sb);
-			e.setMessage(sb.substring(0, sb.length() - 3).toString());
+			Bukkit.broadcastMessage(sb.substring(0, sb.length() - 3).toString());
 		}
 	}
 }
