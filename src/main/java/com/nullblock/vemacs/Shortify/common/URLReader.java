@@ -1,9 +1,10 @@
-package com.nullblock.vemacs.Shortify;
+package com.nullblock.vemacs.Shortify.common;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+
 
 public class URLReader {
 	public static BufferedReader getUrl(String toread) throws IOException {

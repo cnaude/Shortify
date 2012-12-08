@@ -13,9 +13,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.nullblock.vemacs.Shortify.GenericShortifyListener;
-import com.nullblock.vemacs.Shortify.Shortener;
-import com.nullblock.vemacs.Shortify.ShortifyException;
+import com.nullblock.vemacs.Shortify.common.GenericShortifyListener;
+import com.nullblock.vemacs.Shortify.common.Shortener;
+import com.nullblock.vemacs.Shortify.common.ShortifyException;
 
 public class ShortifyListener extends GenericShortifyListener implements Listener {
 
@@ -27,11 +27,15 @@ public class ShortifyListener extends GenericShortifyListener implements Listene
 
 	@EventHandler(priority = EventPriority.LOW)
 	public void playerChat(AsyncPlayerChatEvent e) {
-		Shortener shortener = BukkitShared.getShortener(plugin);
+		Shortener shortener = getShortener(plugin.getCfg());
 		if (e.getPlayer().hasPermission("shortify.shorten")) {
-			String minlength = plugin.getConfig().getString("minlength");
 			try {
-				e.setMessage(shortenAll(e.getMessage(), Integer.valueOf(minlength), shortener));
+				if(plugin.getCfg().getString("mode", "replace").equals("replace")) {
+					e.setMessage(shortenAll(e.getMessage(), Integer.valueOf(plugin.getCfg().getString("minlength")), shortener));
+				}
+				else if(plugin.getCfg().getString("mode", "replace").equals("classic")) {
+					Bukkit.broadcastMessage(classicUrlShorten(e.getMessage(), Integer.valueOf(plugin.getCfg().getString("minlength")), shortener));
+				}
 			} catch (NumberFormatException e1) {
 				Bukkit.getConsoleSender().sendMessage(
 						ChatColor.RED + "Warning: Your config.yml is invalid: minlength is not a number or invalid.");

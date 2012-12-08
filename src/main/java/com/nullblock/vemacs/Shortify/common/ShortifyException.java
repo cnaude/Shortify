@@ -1,4 +1,5 @@
-package com.nullblock.vemacs.Shortify;
+package com.nullblock.vemacs.Shortify.common;
+
 
 /**
  * ShortifyException is the general exception thrown by Shortify, mostly those

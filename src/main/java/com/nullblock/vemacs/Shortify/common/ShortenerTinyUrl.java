@@ -1,4 +1,5 @@
-package com.nullblock.vemacs.Shortify;
+package com.nullblock.vemacs.Shortify.common;
+
 
 public class ShortenerTinyUrl implements Shortener {
 	public String getShortenedUrl(String toshort) throws ShortifyException {

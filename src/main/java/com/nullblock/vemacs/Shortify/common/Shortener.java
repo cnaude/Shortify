@@ -1,4 +1,5 @@
-package com.nullblock.vemacs.Shortify;
+package com.nullblock.vemacs.Shortify.common;
+
 
 /**
  * This is the standard interface used by Shortify to shorten URLs.

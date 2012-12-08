@@ -1,4 +1,5 @@
-package com.nullblock.vemacs.Shortify;
+package com.nullblock.vemacs.Shortify.common;
+
 
 public class ShortenerBitLy implements Shortener {
 

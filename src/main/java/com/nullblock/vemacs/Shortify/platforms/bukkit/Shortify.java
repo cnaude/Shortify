@@ -3,61 +3,27 @@ package com.nullblock.vemacs.Shortify.platforms.bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.nullblock.vemacs.Shortify.platforms.bukkit.Updater.UpdateResult;
+import com.nullblock.vemacs.Shortify.common.CommonConfiguration;
+import com.nullblock.vemacs.Shortify.common.PluginCommon;
+import com.nullblock.vemacs.Shortify.util.Updater;
+import com.nullblock.vemacs.Shortify.util.Updater.UpdateResult;
 
 public final class Shortify extends JavaPlugin {
 
-	private ShortifyListener listener;
-	private ShortifyClassicListener listener1;
-
-	private void simpleReload() {
-		if (this.getConfig().getString("shortener").equals("bitly")
-				&& (this.getConfig().getString("bitlyUSER").equals("none") || this
-						.getConfig().getString("bitlyAPI").equals("none"))) {
-			getLogger()
-					.info(ChatColor.RED
-							+ "bit.ly is not properly configured, see config.yml for details.");
-			getLogger().info(
-					ChatColor.RED + "Reverting to default shortener is.gd.");
-			this.getConfig().set("shortener", "isgd");
-		}
-		if (this.getConfig().getString("shortener").equals("yourls")
-				&& (this.getConfig().getString("yourlsUSER").equals("none")
-						|| this.getConfig().getString("yourlsURI")
-								.equals("none") || this.getConfig()
-						.getString("yourlsPASS").equals("none"))) {
-			getLogger()
-					.info(ChatColor.RED
-							+ "YOURLS is not properly configured, see config.yml for details.");
-			getLogger().info(
-					ChatColor.RED + "Reverting to default shortener is.gd.");
-			this.getConfig().set("shortener", "isgd");
-		}
-		if (this.getConfig().getString("shortener").equals("googl")
-				&& this.getConfig().getString("googAPI").equals("none")) {
-			getLogger()
-					.info(ChatColor.RED
-							+ "goo.gl is not properly configured, see config.yml for details.");
-			getLogger().info(
-					ChatColor.RED + "Reverting to default shortener is.gd.");
-			this.getConfig().set("shortener", "isgd");
-		}
-	}
-
+	private Listener listener;
+	private CommonConfiguration c;
+	
 	@Override
 	public void onEnable() {
-		if (this.getConfig().getString("mode").equals("replace")) {
-			listener = new ShortifyListener(this);
-			getServer().getPluginManager().registerEvents(listener, this);
-		}
-		if (this.getConfig().getString("mode").equals("classic")) {
-			listener1 = new ShortifyClassicListener(this);
-			getServer().getPluginManager().registerEvents(listener1, this);
-		}
-		simpleReload();
-		if (this.getConfig().getBoolean("auto-update")) {
+		// Load config.yml with snakeyaml
+		c = PluginCommon.loadCfg(getFile());
+		PluginCommon.verifyConfiguration(c, getLogger());
+		listener = new ShortifyListener(this);
+		getServer().getPluginManager().registerEvents(listener, this);
+		if (c.getString("auto-update").equals("true")) {
 			getLogger().info("Checking for updates, please wait...");
 			Updater updater = new Updater(this, "Shortify", this.getFile(),
 					Updater.UpdateType.DEFAULT, false);
@@ -67,15 +33,18 @@ public final class Shortify extends JavaPlugin {
 								+ updater.getLatestVersionString()
 								+ ") of Shortify was found and installed. Please restart your server to use the new version.");
 			}
+			if(updater.getResult() == UpdateResult.NO_UPDATE) {
+				getLogger().info("No updates found.");
+			}
 			updater = null;
 		}
-		this.saveConfig();
+		PluginCommon.dumpData(getFile(), c);
 	}
 
 	@Override
 	public void onDisable() {
 		listener = null;
-		listener1 = null;
+		c = null;
 	}
 
 	public boolean onCommand(CommandSender sender, Command command,
@@ -90,8 +59,8 @@ public final class Shortify extends JavaPlugin {
 		// This is currently only /shortify reload
 		if (args.length > 0) {
 			if (args[0].equals("reload")) {
-				reloadConfig();
-				simpleReload();
+				c = PluginCommon.loadCfg(getFile());
+				PluginCommon.verifyConfiguration(c, getLogger());
 				sender.sendMessage(ChatColor.GREEN
 						+ "Shortify has been reloaded.");
 			} else {
@@ -101,5 +70,9 @@ public final class Shortify extends JavaPlugin {
 			sender.sendMessage("/shortify reload");
 		}
 		return true;
+	}
+	
+	protected CommonConfiguration getCfg() {
+		return c;
 	}
 }

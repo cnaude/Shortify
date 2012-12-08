@@ -1,7 +1,8 @@
-package com.nullblock.vemacs.Shortify;
+package com.nullblock.vemacs.Shortify.common;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+
 
 public class ShortenerYourls implements Shortener {
 
