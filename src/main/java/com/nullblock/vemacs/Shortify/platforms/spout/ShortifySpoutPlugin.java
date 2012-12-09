@@ -9,10 +9,10 @@ import com.nullblock.vemacs.Shortify.common.CommonConfiguration;
 import com.nullblock.vemacs.Shortify.common.PluginCommon;
 
 public class ShortifySpoutPlugin extends CommonPlugin {
-	
+
 	private CommonConfiguration c;
 	private Listener listener;
-	
+
 	@Override
 	@UnsafeMethod
 	public void onDisable() {
@@ -41,9 +41,9 @@ public class ShortifySpoutPlugin extends CommonPlugin {
 		PluginCommon.dumpData(getFile(), c);
 		getLogger().info("Shortify reloaded.");
 	}
-	
+
 	protected CommonConfiguration getConfig() {
 		return c;
 	}
-	
+
 }

@@ -3,12 +3,12 @@ package com.nullblock.vemacs.Shortify.common;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-
 public class ShortenerTurlCa implements Shortener {
 	public String getShortenedUrl(String toshort) throws ShortifyException {
 		String inputLine = null;
 		try {
-			BufferedReader in = URLReader.getUrl("http://turl.ca/api.php?url=" + toshort);
+			BufferedReader in = URLReader.getUrl("http://turl.ca/api.php?url="
+					+ toshort);
 			while ((inputLine = in.readLine()) != null) {
 				if (inputLine.startsWith("SUCCESS:")) {
 					return inputLine.replace("SUCCESS:", "http://turl.ca/");

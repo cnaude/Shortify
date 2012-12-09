@@ -1,6 +1,5 @@
 package com.nullblock.vemacs.Shortify.common;
 
-
 public class ShortenerBitLy implements Shortener {
 
 	private String u, a = "";
@@ -12,7 +11,8 @@ public class ShortenerBitLy implements Shortener {
 
 	public String getShortenedUrl(String toshort) throws ShortifyException {
 		return URLReader.getUrlSimple("http://api.bit.ly/v3/shorten?login=" + u
-					+ "&apiKey=" + a + "&longUrl=" + toshort + "&format=txt", "bit.ly");
+				+ "&apiKey=" + a + "&longUrl=" + toshort + "&format=txt",
+				"bit.ly");
 	}
 
 }

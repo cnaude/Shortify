@@ -17,7 +17,8 @@ import com.nullblock.vemacs.Shortify.common.GenericShortifyListener;
 import com.nullblock.vemacs.Shortify.common.Shortener;
 import com.nullblock.vemacs.Shortify.common.ShortifyException;
 
-public class ShortifyListener extends GenericShortifyListener implements Listener {
+public class ShortifyListener extends GenericShortifyListener implements
+		Listener {
 
 	private Shortify plugin;
 
@@ -30,15 +31,24 @@ public class ShortifyListener extends GenericShortifyListener implements Listene
 		Shortener shortener = getShortener(plugin.getCfg());
 		if (e.getPlayer().hasPermission("shortify.shorten")) {
 			try {
-				if(plugin.getCfg().getString("mode", "replace").equals("replace")) {
-					e.setMessage(shortenAll(e.getMessage(), Integer.valueOf(plugin.getCfg().getString("minlength")), shortener));
-				}
-				else if(plugin.getCfg().getString("mode", "replace").equals("classic")) {
-					Bukkit.broadcastMessage(classicUrlShorten(e.getMessage(), Integer.valueOf(plugin.getCfg().getString("minlength")), shortener));
+				if (plugin.getCfg().getString("mode", "replace")
+						.equals("replace")) {
+					e.setMessage(shortenAll(
+							e.getMessage(),
+							Integer.valueOf(plugin.getCfg().getString(
+									"minlength")), shortener));
+				} else if (plugin.getCfg().getString("mode", "replace")
+						.equals("classic")) {
+					Bukkit.broadcastMessage(classicUrlShorten(
+							e.getMessage(),
+							Integer.valueOf(plugin.getCfg().getString(
+									"minlength")), shortener));
 				}
 			} catch (NumberFormatException e1) {
-				Bukkit.getConsoleSender().sendMessage(
-						ChatColor.RED + "Warning: Your config.yml is invalid: minlength is not a number or invalid.");
+				Bukkit.getConsoleSender()
+						.sendMessage(
+								ChatColor.RED
+										+ "Warning: Your config.yml is invalid: minlength is not a number or invalid.");
 			} catch (ShortifyException e1) {
 				Bukkit.getConsoleSender().sendMessage(
 						ChatColor.RED + "Warning: " + e1.getMessage());

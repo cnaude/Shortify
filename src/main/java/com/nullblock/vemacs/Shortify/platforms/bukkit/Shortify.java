@@ -15,7 +15,7 @@ public final class Shortify extends JavaPlugin {
 
 	private Listener listener;
 	private CommonConfiguration c;
-	
+
 	@Override
 	public void onEnable() {
 		// Load config.yml with snakeyaml
@@ -29,11 +29,12 @@ public final class Shortify extends JavaPlugin {
 					Updater.UpdateType.DEFAULT, false);
 			if (updater.getResult() == UpdateResult.SUCCESS) {
 				getLogger()
-						.info(ChatColor.GREEN + "An update (version "
+						.info(ChatColor.GREEN
+								+ "An update (version "
 								+ updater.getLatestVersionString()
 								+ ") of Shortify was found and installed. Please restart your server to use the new version.");
 			}
-			if(updater.getResult() == UpdateResult.NO_UPDATE) {
+			if (updater.getResult() == UpdateResult.NO_UPDATE) {
 				getLogger().info("No updates found.");
 			}
 			updater = null;
@@ -71,7 +72,7 @@ public final class Shortify extends JavaPlugin {
 		}
 		return true;
 	}
-	
+
 	protected CommonConfiguration getCfg() {
 		return c;
 	}

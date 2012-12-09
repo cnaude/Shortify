@@ -17,70 +17,72 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 /**
- * A simple configuration class
- * Supports YAML, .properties
+ * A simple configuration class Supports YAML, .properties
  * 
  * @author tuxed
- *
+ * 
  */
 public class CommonConfiguration {
 	private Map<Object, Object> configuration = new HashMap<Object, Object>();
 	private Map<Object, Object> defaults = new HashMap<Object, Object>();
-	
+
 	public CommonConfiguration() {
 	}
-	
+
 	public CommonConfiguration(Map<Object, Object> map) {
 		configuration = map;
 	}
-	
+
 	public CommonConfiguration(Reader f) throws FileNotFoundException {
 		loadYaml(f);
 	}
-	
+
 	public CommonConfiguration(File f) throws FileNotFoundException {
 		loadYaml(f);
 	}
-	
+
 	public void addDefault(Object name, Object val) {
 		defaults.put(name, val);
 	}
-	
+
 	public void removeDefault(Object name) {
 		defaults.remove(name);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void loadYaml(File f) throws FileNotFoundException {
-		Object tmp = new Yaml(new SafeConstructor()).load(new FileInputStream(f));
-		if(tmp instanceof Map<?,?>) {
-			configuration = (Map<Object, Object>)tmp;
+		Object tmp = new Yaml(new SafeConstructor())
+				.load(new FileInputStream(f));
+		if (tmp instanceof Map<?, ?>) {
+			configuration = (Map<Object, Object>) tmp;
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void loadYaml(Reader f) throws FileNotFoundException {
 		Object tmp = new Yaml(new SafeConstructor()).load(f);
-		if(tmp instanceof Map<?,?>) {
-			configuration = (Map<Object, Object>)tmp;
+		if (tmp instanceof Map<?, ?>) {
+			configuration = (Map<Object, Object>) tmp;
 		}
 	}
-	
-	public void loadProperties(File f) throws FileNotFoundException, IOException {
+
+	public void loadProperties(File f) throws FileNotFoundException,
+			IOException {
 		Properties p = new Properties();
 		p.load(new FileInputStream(f));
 		for (Map.Entry<?, ?> entry : p.entrySet()) {
-			configuration.put(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
+			configuration.put(String.valueOf(entry.getKey()),
+					String.valueOf(entry.getValue()));
 		}
 	}
-	
+
 	public Object get(Object node) {
 		return get(node, null);
 	}
-	
+
 	public Object get(Object node, Object valIfNotFound) {
-		if(!configuration.containsKey(node)) {
-			if(defaults.containsKey(node)) {
+		if (!configuration.containsKey(node)) {
+			if (defaults.containsKey(node)) {
 				return defaults.get(node);
 			} else {
 				return valIfNotFound;
@@ -88,31 +90,31 @@ public class CommonConfiguration {
 		}
 		return configuration.get(node);
 	}
-	
+
 	public void set(Object node, Object val) {
 		configuration.remove(node);
 		configuration.put(node, val);
 	}
-	
+
 	public String getString(Object node) {
 		return getString(node, "");
 	}
-	
+
 	public String getString(Object node, String valIfNotFound) {
 		return String.valueOf(get(node, valIfNotFound));
 	}
-	
+
 	public boolean contains(Object node) {
 		return configuration.containsKey(node);
 	}
-	
+
 	private Map<Object, Object> mergeDefaultsAndConfig() {
 		HashMap<Object, Object> s = new HashMap<Object, Object>();
 		s.putAll(configuration);
 		s.putAll(defaults);
 		return s;
 	}
-	
+
 	public void dumpYaml(File f) throws IOException {
 		BufferedWriter s = new BufferedWriter(new FileWriter(f));
 		DumperOptions options = new DumperOptions();
@@ -125,19 +127,20 @@ public class CommonConfiguration {
 			s.close();
 		}
 	}
-	
-	public void dumpProperties(File f) throws FileNotFoundException, IOException {
+
+	public void dumpProperties(File f) throws FileNotFoundException,
+			IOException {
 		Properties p = new Properties();
 		p.putAll(mergeDefaultsAndConfig());
 		p.store(new FileOutputStream(f), "");
 	}
-	
-	public Map<?,?> getConfigurationMap() {
+
+	public Map<?, ?> getConfigurationMap() {
 		return configuration;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public void setConfigurationMap(Map<?,?> cfg) {
+	public void setConfigurationMap(Map<?, ?> cfg) {
 		configuration = (Map<Object, Object>) cfg;
 	}
 }

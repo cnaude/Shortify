@@ -4,21 +4,22 @@ import java.io.UnsupportedEncodingException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**
- * The generic Shortify listener interface used by all Shortify platforms.
- * This class should be extended from the listener and implement the listener
- * as well.
+ * The generic Shortify listener interface used by all Shortify platforms. This
+ * class should be extended from the listener and implement the listener as
+ * well.
  * 
  * @author minecrafter/vemacs
  */
 public class GenericShortifyListener {
-	
+
 	/**
 	 * Shorten all URLs in a String.
-	 * @throws ShortifyException 
+	 * 
+	 * @throws ShortifyException
 	 */
-	public static String shortenAll(String txt, Integer minln, Shortener shortener) throws ShortifyException {
+	public static String shortenAll(String txt, Integer minln,
+			Shortener shortener) throws ShortifyException {
 		// From Daring Fireball
 		Pattern p = Pattern
 				.compile("(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?������]))");
@@ -29,9 +30,8 @@ public class GenericShortifyListener {
 			urlTmp = m.group(1);
 			if (urlTmp.length() >= minln) {
 				try {
-					urlTmp = shortener
-							.getShortenedUrl(java.net.URLEncoder
-									.encode(urlTmp, "UTF-8"));
+					urlTmp = shortener.getShortenedUrl(java.net.URLEncoder
+							.encode(urlTmp, "UTF-8"));
 					// might as well put the encoder in the listener to
 					// prevent possible injections
 				} catch (UnsupportedEncodingException e1) {
@@ -44,7 +44,7 @@ public class GenericShortifyListener {
 		m.appendTail(sb);
 		return sb.toString();
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -52,17 +52,15 @@ public class GenericShortifyListener {
 		String service = c.getString("shortener");
 		Shortener shortener = null;
 		if (service.equals("googl")) {
-			shortener = new ShortenerGooGl(c.getString(
-					"googAPI"));
+			shortener = new ShortenerGooGl(c.getString("googAPI"));
 		}
 		if (service.equals("bitly")) {
-			shortener = new ShortenerBitLy(c.getString(
-					"bitlyUSER"), c.getString("bitlyAPI"));
+			shortener = new ShortenerBitLy(c.getString("bitlyUSER"),
+					c.getString("bitlyAPI"));
 		}
 		if (service.equals("yourls")) {
-			shortener = new ShortenerYourls(c.getString(
-					"yourlsURI"), c.getString("yourlsUSER"),
-					c.getString("yourlsPASS"));
+			shortener = new ShortenerYourls(c.getString("yourlsURI"),
+					c.getString("yourlsUSER"), c.getString("yourlsPASS"));
 		}
 		if (service.equals("tinyurl")) {
 			shortener = new ShortenerTinyUrl();
@@ -73,13 +71,18 @@ public class GenericShortifyListener {
 		if (service.equals("isgd")) {
 			shortener = new ShortenerIsGd();
 		}
-		if(shortener == null) {
+		// Accepting both frmli and pdo
+		if (service.equals("frmli") || service.equals("pdo")) {
+			shortener = new ShortenerPasteDebianNet();
+		}
+		if (shortener == null) {
 			shortener = new ShortenerIsGd();
 		}
 		return shortener;
 	}
 
-	public String classicUrlShorten(String message, Integer minln, Shortener shortener) throws ShortifyException {
+	public String classicUrlShorten(String message, Integer minln,
+			Shortener shortener) throws ShortifyException {
 		Pattern p = Pattern
 				.compile("(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]))");
 		Matcher m = p.matcher(message);
@@ -89,8 +92,8 @@ public class GenericShortifyListener {
 			urlTmp = m.group(1);
 			if (urlTmp.length() > minln) {
 				try {
-					output = output + shortener
-							.getShortenedUrl(java.net.URLEncoder
+					output = output
+							+ shortener.getShortenedUrl(java.net.URLEncoder
 									.encode(urlTmp, "UTF-8")) + " ,";
 					// might as well put the encoder in the listener to
 					// prevent possible injections
