@@ -22,6 +22,7 @@ import com.nullblock.vemacs.Shortify.common.ShortenerIsGd;
 import com.nullblock.vemacs.Shortify.common.ShortenerPasteDebianNet;
 import com.nullblock.vemacs.Shortify.common.ShortenerTinyUrl;
 import com.nullblock.vemacs.Shortify.common.ShortenerTurlCa;
+import com.nullblock.vemacs.Shortify.common.ShortenerTx0;
 import com.nullblock.vemacs.Shortify.common.ShortenerYourls;
 import com.nullblock.vemacs.Shortify.common.ShortifyException;
 
@@ -85,7 +86,8 @@ public class UrlShortenerTest {
 		// attempt to shorten the BukkitDev page.
 		System.out.println("---- No specially configured shorteners");
 		Class[] shorteners = { ShortenerIsGd.class, ShortenerTinyUrl.class,
-				ShortenerTurlCa.class, ShortenerPasteDebianNet.class };
+				ShortenerTurlCa.class, ShortenerPasteDebianNet.class,
+				ShortenerTx0.class };
 		for (int i = 0; i < shorteners.length; i++) {
 			// Attempt to shorten
 			doShortenerTest((Shortener) shorteners[i].getConstructor().newInstance());
@@ -144,15 +146,9 @@ public class UrlShortenerTest {
 			System.out
 					.println("Shortener "
 							+ shortener.getClass().getName()
-							+ " (no encoding): "
+							+ ": "
 							+ shortener
 									.getShortenedUrl("http://dev.bukkit.org/server-mods/shortify/"));
-			System.out
-					.println("Shortener "
-							+ shortener.getClass().getName()
-							+ " (with encoding): "
-							+ shortener
-									.getShortenedUrl("http://dev.bukkit.org/server-mods/shortify/#encodingtest"));
 		} catch (ShortifyException e) {
 			fail("Shortener " + shortener.getClass().getName()
 					+ " returned an error: " + e.getMessage());
