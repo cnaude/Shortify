@@ -24,6 +24,7 @@ import com.nullblock.vemacs.Shortify.common.ShortenerTinyUrl;
 import com.nullblock.vemacs.Shortify.common.ShortenerTurlCa;
 import com.nullblock.vemacs.Shortify.common.ShortenerTx0;
 import com.nullblock.vemacs.Shortify.common.ShortenerYourls;
+import com.nullblock.vemacs.Shortify.common.ShortenerYu8Me;
 import com.nullblock.vemacs.Shortify.common.ShortifyException;
 
 /**
@@ -87,7 +88,7 @@ public class UrlShortenerTest {
 		System.out.println("---- No specially configured shorteners");
 		Class[] shorteners = { ShortenerIsGd.class, ShortenerTinyUrl.class,
 				ShortenerTurlCa.class, ShortenerPasteDebianNet.class,
-				ShortenerTx0.class };
+				ShortenerTx0.class, ShortenerYu8Me.class };
 		for (int i = 0; i < shorteners.length; i++) {
 			// Attempt to shorten
 			doShortenerTest((Shortener) shorteners[i].getConstructor().newInstance());

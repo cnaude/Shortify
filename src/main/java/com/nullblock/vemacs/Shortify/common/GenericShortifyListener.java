@@ -75,8 +75,11 @@ public class GenericShortifyListener {
 		if (service.equals("frmli") || service.equals("pdo")) {
 			shortener = new ShortenerPasteDebianNet();
 		}
-		if (service.equals("tx0")) {
+		if (service.equals("tx0") || service.equals("tx0org")) {
 			shortener = new ShortenerTx0();
+		}
+		if (service.equals("yu8me") || service.equals("yu8")) {
+			shortener = new ShortenerYu8Me();
 		}
 		if (shortener == null) {
 			shortener = new ShortenerIsGd();
