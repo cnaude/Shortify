@@ -91,7 +91,8 @@ public class UrlShortenerTest {
 				ShortenerTx0.class, ShortenerYu8Me.class };
 		for (int i = 0; i < shorteners.length; i++) {
 			// Attempt to shorten
-			doShortenerTest((Shortener) shorteners[i].getConstructor().newInstance());
+			doShortenerTest((Shortener) shorteners[i].getConstructor()
+					.newInstance());
 		}
 	}
 
@@ -109,7 +110,7 @@ public class UrlShortenerTest {
 			System.out.println("No bit.ly API key specified.");
 			bypass = true;
 		}
-		if(!bypass) {
+		if (!bypass) {
 			doShortenerTest(new ShortenerBitLy(bu, ba));
 		}
 		bypass = false;
@@ -118,7 +119,7 @@ public class UrlShortenerTest {
 			System.out.println("No goo.gl API key specified.");
 			bypass = true;
 		}
-		if(!bypass) {
+		if (!bypass) {
 			doShortenerTest(new ShortenerGooGl(ga));
 		}
 		bypass = false;
@@ -137,7 +138,7 @@ public class UrlShortenerTest {
 			System.out.println("No YOURLS password specified.");
 			bypass = true;
 		}
-		if(!bypass) {
+		if (!bypass) {
 			doShortenerTest(new ShortenerYourls(yur, yu, yp));
 		}
 	}
@@ -155,6 +156,5 @@ public class UrlShortenerTest {
 					+ " returned an error: " + e.getMessage());
 		}
 	}
-	
-	
+
 }

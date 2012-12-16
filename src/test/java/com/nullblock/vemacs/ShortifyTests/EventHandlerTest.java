@@ -19,8 +19,9 @@ public class EventHandlerTest {
 		// With is.gd, attempt shortening a message.
 		try {
 			msge = "This is a sample text and should point to a Google query for Shortify: http://www.google.com/search?q=Shortify";
-			msg = GenericShortifyListener.shortenAll(msge, 1, new ShortenerIsGd());
-			if(!msg.startsWith("This is a sample text and should point to a Google query for Shortify: http://is.gd/")) {
+			msg = GenericShortifyListener.shortenAll(msge, 1,
+					new ShortenerIsGd());
+			if (!msg.startsWith("This is a sample text and should point to a Google query for Shortify: http://is.gd/")) {
 				System.out.println("Expected message mismatch!");
 				System.out.println("Got:");
 				System.out.println(msg);
@@ -29,16 +30,17 @@ public class EventHandlerTest {
 				fail("Message didn't shorten! (Bug?)");
 			}
 		} catch (ShortifyException e) {
-			fail("Couldn't shorten message!"
-					+ " is.gd returned an error: " + e.getMessage());
+			fail("Couldn't shorten message!" + " is.gd returned an error: "
+					+ e.getMessage());
 		}
 		System.out.println(msge + " -> " + msg);
 		System.out.println("Message without URL:");
 		// Try shortening a message without a URL in it.
 		try {
 			msge = "This is a sample text without any URLs.";
-			msg = GenericShortifyListener.shortenAll(msge, 1, new ShortenerIsGd());
-			if(!msg.equals(msge)) {
+			msg = GenericShortifyListener.shortenAll(msge, 1,
+					new ShortenerIsGd());
+			if (!msg.equals(msge)) {
 				System.out.println("Expected message mismatch!");
 				System.out.println("Got:");
 				System.out.println(msg);
@@ -47,8 +49,8 @@ public class EventHandlerTest {
 				fail("Message not expected! (Bug?)");
 			}
 		} catch (ShortifyException e) {
-			fail("Couldn't shorten message!"
-					+ " is.gd returned an error: " + e.getMessage());
+			fail("Couldn't shorten message!" + " is.gd returned an error: "
+					+ e.getMessage());
 		}
 		System.out.println(msge + " -> " + msg);
 	}
