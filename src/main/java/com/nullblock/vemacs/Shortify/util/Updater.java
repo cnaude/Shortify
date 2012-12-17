@@ -13,14 +13,13 @@ import java.net.URLConnection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 
 /**
  * Check dev.bukkit.org to find updates for a given plugin, and download the
@@ -44,7 +43,7 @@ import org.bukkit.plugin.Plugin;
  */
 
 public class Updater {
-	private Plugin plugin;
+	private Logger logger;
 	private UpdateType type;
 	private String versionTitle;
 	private String versionLink;
@@ -72,8 +71,7 @@ public class Updater {
 														// contains one of
 														// these, don't update.
 	private static final int BYTE_SIZE = 1024; // Used for downloading files
-	private String updateFolder = YamlConfiguration.loadConfiguration(
-			new File("bukkit.yml")).getString("settings.update-folder"); // The
+	private String updateFolder = "update"; // The
 																			// folder
 																			// that
 																			// downloads
@@ -217,9 +215,9 @@ public class Updater {
 	 *            True if the program should announce the progress of new
 	 *            updates in console
 	 */
-	public Updater(Plugin plugin, String slug, File file, UpdateType type,
+	public Updater(Logger logger, String slug, String version, File file, UpdateType type,
 			boolean announce) {
-		this.plugin = plugin;
+		this.logger = logger;
 		this.type = type;
 		this.announce = announce;
 		try {
@@ -227,10 +225,10 @@ public class Updater {
 			url = new URL(DBOUrl + slug + "/files.rss");
 		} catch (MalformedURLException ex) {
 			// The slug doesn't exist
-			plugin.getLogger()
+			logger
 					.warning(
 							"The author of this plugin has misconfigured their Auto Update system");
-			plugin.getLogger()
+			logger
 					.warning(
 							"The project slug added ('"
 									+ slug
@@ -240,7 +238,7 @@ public class Updater {
 		if (url != null) {
 			// Obtain the results of the project's file feed
 			readFeed();
-			if (versionCheck(versionTitle)) {
+			if (versionCheck(versionTitle, version)) {
 				String fileLink = getFile(versionLink);
 				if (fileLink != null && type != UpdateType.NO_DOWNLOAD) {
 					String name = file.getName();
@@ -300,7 +298,7 @@ public class Updater {
 			byte[] data = new byte[BYTE_SIZE];
 			int count;
 			if (announce)
-				plugin.getLogger().info(
+				logger.info(
 						"About to download a new update: " + versionTitle);
 			long downloaded = 0;
 			while ((count = in.read(data, 0, BYTE_SIZE)) != -1) {
@@ -308,7 +306,7 @@ public class Updater {
 				fout.write(data, 0, count);
 				int percent = (int) (downloaded * 100 / fileLength);
 				if (announce & (percent % 10 == 0)) {
-					plugin.getLogger().info(
+					logger.info(
 							"Downloading update: " + percent + "% of "
 									+ fileLength + " bytes.");
 				}
@@ -327,9 +325,9 @@ public class Updater {
 				unzip(dFile.getCanonicalPath());
 			}
 			if (announce)
-				plugin.getLogger().info("Finished updating.");
+				logger.info("Finished updating.");
 		} catch (Exception ex) {
-			plugin.getLogger()
+			logger
 					.warning(
 							"The auto-updater tried to download a new update, but was unsuccessful.");
 			result = Updater.UpdateResult.FAIL_DOWNLOAD;
@@ -432,7 +430,7 @@ public class Updater {
 			fSourceZip.delete();
 		} catch (IOException ex) {
 			ex.printStackTrace();
-			plugin.getLogger()
+			logger
 					.warning(
 							"The auto-updater tried to unzip a new update file, but was unsuccessful.");
 			result = Updater.UpdateResult.FAIL_DOWNLOAD;
@@ -493,7 +491,7 @@ public class Updater {
 			buff = null;
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			plugin.getLogger()
+			logger
 					.warning(
 							"The auto-updater tried to contact dev.bukkit.org, but was unsuccessful.");
 			result = Updater.UpdateResult.FAIL_DBO;
@@ -506,9 +504,8 @@ public class Updater {
 	 * Check to see if the program should continue by evaluation whether the
 	 * plugin is already updated, or shouldn't be updated
 	 */
-	private boolean versionCheck(String title) {
+	private boolean versionCheck(String title, String version) {
 		if (type != UpdateType.NO_VERSION_CHECK) {
-			String version = plugin.getDescription().getVersion();
 			if (title.split("v").length == 2) {
 				String remoteVersion = title.split("v")[1].split(" ")[0]; // Get
 																			// the
@@ -532,16 +529,14 @@ public class Updater {
 				}
 			} else {
 				// The file's name did not contain the string 'vVersion'
-				plugin.getLogger()
+				logger
 						.warning(
 								"The author of this plugin has misconfigured their Auto Update system");
-				plugin.getLogger()
+				logger
 						.warning(
 								"Files uploaded to BukkitDev should contain the version number, seperated from the name by a 'v', such as PluginName v1.0");
-				plugin.getLogger().warning(
-						"Please notify the author ("
-								+ plugin.getDescription().getAuthors().get(0)
-								+ ") of this error.");
+				logger.warning(
+						"Please notify the authors of this error.");
 				result = Updater.UpdateResult.FAIL_NOVERSION;
 				return false;
 			}

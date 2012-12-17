@@ -25,7 +25,8 @@ public final class Shortify extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(listener, this);
 		if (c.getString("auto-update").equals("true")) {
 			getLogger().info("Checking for updates, please wait...");
-			Updater updater = new Updater(this, "Shortify", this.getFile(),
+			Updater updater = new Updater(getLogger(), "Shortify", 
+					this.getDescription().getVersion(), this.getFile(),
 					Updater.UpdateType.DEFAULT, false);
 			if (updater.getResult() == UpdateResult.SUCCESS) {
 				getLogger()
