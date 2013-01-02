@@ -71,14 +71,6 @@ public class Updater {
 														// contains one of
 														// these, don't update.
 	private static final int BYTE_SIZE = 1024; // Used for downloading files
-	private String updateFolder = "update"; // The
-																			// folder
-																			// that
-																			// downloads
-																			// will
-																			// be
-																			// placed
-																			// in
 	private Updater.UpdateResult result = Updater.UpdateResult.SUCCESS; // Used
 																		// for
 																		// determining
@@ -248,7 +240,7 @@ public class Updater {
 						String[] split = fileLink.split("/");
 						name = split[split.length - 1];
 					}
-					saveFile(new File("plugins/" + updateFolder), name,
+					saveFile(file, name,
 							fileLink);
 				} else {
 					result = UpdateResult.UPDATE_AVAILABLE;
@@ -313,7 +305,7 @@ public class Updater {
 			}
 			// Just a quick check to make sure we didn't leave any files from
 			// last time...
-			for (File xFile : new File("plugins/" + updateFolder).listFiles()) {
+			for (File xFile : new File("plugins").listFiles()) {
 				if (xFile.getName().endsWith(".zip")) {
 					xFile.delete();
 				}
@@ -374,11 +366,11 @@ public class Updater {
 					bos.flush();
 					bos.close();
 					bis.close();
-					String name = destinationFilePath.getName();
-					if (name.endsWith(".jar") && pluginFile(name)) {
+					//String name = destinationFilePath.getName();
+					/*if (name.endsWith(".jar") && pluginFile(name)) {
 						destinationFilePath.renameTo(new File("plugins/"
 								+ updateFolder + "/" + name));
-					}
+					}*/
 				}
 				entry = null;
 				destinationFilePath = null;

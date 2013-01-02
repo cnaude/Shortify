@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import com.nullblock.vemacs.Shortify.util.ShortifyUtility;
+
 public class PluginCommon {
 
 	public static void verifyConfiguration(CommonConfiguration c, Logger l) {
@@ -51,7 +53,7 @@ public class PluginCommon {
 		c.addDefault("yourlsPASS", "none");
 		BufferedReader c2 = null;
 		try {
-			c2 = URLReader.getUrl("jar:file:" + pl.getAbsolutePath()
+			c2 = ShortifyUtility.getUrl("jar:file:" + pl.getAbsolutePath()
 					+ "!/config.yml");
 		} catch (IOException e3) {
 			// TODO Auto-generated catch block

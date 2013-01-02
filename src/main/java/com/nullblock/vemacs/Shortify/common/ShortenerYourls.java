@@ -3,6 +3,8 @@ package com.nullblock.vemacs.Shortify.common;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import com.nullblock.vemacs.Shortify.util.ShortifyUtility;
+
 public class ShortenerYourls implements Shortener {
 
 	private String yourls_apiuri;
@@ -18,7 +20,7 @@ public class ShortenerYourls implements Shortener {
 	@Override
 	public String getShortenedUrl(String toshort) throws ShortifyException {
 		try {
-			BufferedReader in = URLReader.getUrl(yourls_apiuri + "?username="
+			BufferedReader in = ShortifyUtility.getUrl(yourls_apiuri + "?username="
 					+ yourls_apiuser + "&password=" + yourls_apipass
 					+ "&action=shorturl&url=" + toshort + "&format=simple");
 			String inputLine;

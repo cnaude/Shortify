@@ -1,5 +1,7 @@
 package com.nullblock.vemacs.Shortify.platforms.bukkit;
 
+import java.io.IOException;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -8,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.nullblock.vemacs.Shortify.common.CommonConfiguration;
 import com.nullblock.vemacs.Shortify.common.PluginCommon;
+import com.nullblock.vemacs.Shortify.util.ShortifyUtility;
 import com.nullblock.vemacs.Shortify.util.Updater;
 import com.nullblock.vemacs.Shortify.util.Updater.UpdateResult;
 
@@ -21,6 +24,12 @@ public final class Shortify extends JavaPlugin {
 		// Load config.yml with snakeyaml
 		c = PluginCommon.loadCfg(getFile());
 		PluginCommon.verifyConfiguration(c, getLogger());
+		try {
+			ShortifyUtility.setupMetrics(new Metrics(this), c);
+			getLogger().info("Metrics setup.");
+		} catch (IOException e) {
+			getLogger().warning("Unable to set up Metrics.");
+		}
 		listener = new ShortifyListener(this);
 		getServer().getPluginManager().registerEvents(listener, this);
 		if (c.getString("auto-update").equals("true")) {

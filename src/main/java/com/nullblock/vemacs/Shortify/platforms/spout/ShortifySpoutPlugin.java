@@ -1,12 +1,13 @@
 package com.nullblock.vemacs.Shortify.platforms.spout;
 
 import org.spout.api.Spout;
-import org.spout.api.UnsafeMethod;
 import org.spout.api.plugin.CommonPlugin;
 import org.spout.api.event.Listener;
 
+import com.nullblock.vemacs.Shortify.platforms.spout.Metrics;
 import com.nullblock.vemacs.Shortify.common.CommonConfiguration;
 import com.nullblock.vemacs.Shortify.common.PluginCommon;
+import com.nullblock.vemacs.Shortify.util.ShortifyUtility;
 import com.nullblock.vemacs.Shortify.util.Updater;
 import com.nullblock.vemacs.Shortify.util.Updater.UpdateResult;
 
@@ -16,7 +17,6 @@ public class ShortifySpoutPlugin extends CommonPlugin {
 	private Listener listener;
 
 	@Override
-	@UnsafeMethod
 	public void onDisable() {
 		c = null;
 		listener = null;
@@ -24,10 +24,15 @@ public class ShortifySpoutPlugin extends CommonPlugin {
 	}
 
 	@Override
-	@UnsafeMethod
 	public void onEnable() {
 		c = PluginCommon.loadCfg(this.getFile());
 		PluginCommon.verifyConfiguration(c, getLogger());
+		try {
+			ShortifyUtility.setupMetrics(new Metrics(this), c);
+			getLogger().info("Metrics setup.");
+		} catch (Exception e) {
+			getLogger().warning("Unable to set up Metrics.");
+		}
 		listener = new ShortifySpoutListener(this);
 		Spout.getEventManager().registerEvents(listener, this);
 		if (c.getString("auto-update").equals("true")) {
@@ -51,7 +56,6 @@ public class ShortifySpoutPlugin extends CommonPlugin {
 	}
 
 	@Override
-	@UnsafeMethod
 	public void onReload() {
 		// Gracefully reload our configuration
 		c = PluginCommon.loadCfg(this.getFile());
