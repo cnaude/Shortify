@@ -4,3 +4,4 @@ bin/*
 .classpath
 target/*
 ShortifyTests.properties
+dependency-reduced-pom.xml
