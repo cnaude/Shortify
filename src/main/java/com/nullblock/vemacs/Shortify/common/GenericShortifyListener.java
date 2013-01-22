@@ -33,8 +33,8 @@ public class GenericShortifyListener {
 					urlTmp = shortener.getShortenedUrl(java.net.URLEncoder
 							.encode(urlTmp, "UTF-8"));
 					//CommonConfiguration <config>;
-					//urlTmp = ColorParse(<config>.getString("Prefix")) + urlTmp + ChatColor.RESET;
-					//possibly use the color parser from BigBen, and use names instead of IDs?
+					//urlTmp = textToColor(<config>.getString("Prefix")) + urlTmp + ChatColor.RESET;
+					//TODO: use a more extensible method for textToColor that doesn't rely on hardcoding
 					// might as well put the encoder in the listener to
 					// prevent possible injections
 				} catch (UnsupportedEncodingException e1) {
