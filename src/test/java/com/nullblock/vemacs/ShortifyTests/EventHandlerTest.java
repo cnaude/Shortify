@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.nullblock.vemacs.Shortify.common.GenericShortifyListener;
 import com.nullblock.vemacs.Shortify.common.ShortenerIsGd;
 import com.nullblock.vemacs.Shortify.common.ShortifyException;
+import com.nullblock.vemacs.Shortify.util.ShortifyUtility;
 
 public class EventHandlerTest {
 
@@ -19,7 +19,7 @@ public class EventHandlerTest {
 		// With is.gd, attempt shortening a message.
 		try {
 			msge = "This is a sample text and should point to a Google query for Shortify: http://www.google.com/search?q=Shortify";
-			msg = GenericShortifyListener.shortenAll(msge, 1,
+			msg = ShortifyUtility.shortenAll(msge, 1,
 					new ShortenerIsGd());
 			if (!msg.startsWith("This is a sample text and should point to a Google query for Shortify: http://is.gd/")) {
 				System.out.println("Expected message mismatch!");
@@ -38,7 +38,7 @@ public class EventHandlerTest {
 		// Try shortening a message without a URL in it.
 		try {
 			msge = "This is a sample text without any URLs.";
-			msg = GenericShortifyListener.shortenAll(msge, 1,
+			msg = ShortifyUtility.shortenAll(msge, 1,
 					new ShortenerIsGd());
 			if (!msg.equals(msge)) {
 				System.out.println("Expected message mismatch!");

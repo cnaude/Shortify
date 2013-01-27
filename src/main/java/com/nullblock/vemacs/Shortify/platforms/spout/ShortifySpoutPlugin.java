@@ -1,17 +1,21 @@
 package com.nullblock.vemacs.Shortify.platforms.spout;
 
+import java.util.logging.Logger;
+
 import org.spout.api.Spout;
 import org.spout.api.plugin.CommonPlugin;
+import org.spout.api.scheduler.TaskPriority;
 import org.spout.api.event.Listener;
 
 import com.nullblock.vemacs.Shortify.platforms.spout.Metrics;
 import com.nullblock.vemacs.Shortify.common.CommonConfiguration;
 import com.nullblock.vemacs.Shortify.common.PluginCommon;
+import com.nullblock.vemacs.Shortify.common.ShortifyCommonPlugin;
 import com.nullblock.vemacs.Shortify.util.ShortifyUtility;
 import com.nullblock.vemacs.Shortify.util.Updater;
 import com.nullblock.vemacs.Shortify.util.Updater.UpdateResult;
 
-public class ShortifySpoutPlugin extends CommonPlugin {
+public class ShortifySpoutPlugin extends CommonPlugin implements ShortifyCommonPlugin {
 
 	private CommonConfiguration c;
 	private Listener listener;
@@ -66,6 +70,27 @@ public class ShortifySpoutPlugin extends CommonPlugin {
 
 	protected CommonConfiguration getConfig() {
 		return c;
+	}
+
+	@Override
+	public Logger getLog() {
+		return getLogger();
+	}
+
+	@Override
+	public int scheduleTaskRepeating(Runnable r, long i, long d) {
+		return this.getEngine().getScheduler().scheduleSyncRepeatingTask(this, r, i, d, TaskPriority.NORMAL).getTaskId();
+	}
+
+	@Override
+	public void cancelTask(int t) {
+		getEngine().getScheduler().cancelTask(t);
+	}
+
+	@Override
+	public String serverInfo() {
+		// As Spout does not have a notation of "Online Mode", we will assume that yes, we're in online mode.
+		return "true|" + getEngine().getVersion() + "|" + getEngine().getAllPlayers().size();
 	}
 
 }

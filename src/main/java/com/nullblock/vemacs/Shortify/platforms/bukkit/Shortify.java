@@ -1,6 +1,7 @@
 package com.nullblock.vemacs.Shortify.platforms.bukkit;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -10,11 +11,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.nullblock.vemacs.Shortify.common.CommonConfiguration;
 import com.nullblock.vemacs.Shortify.common.PluginCommon;
+import com.nullblock.vemacs.Shortify.common.ShortifyCommonPlugin;
 import com.nullblock.vemacs.Shortify.util.ShortifyUtility;
 import com.nullblock.vemacs.Shortify.util.Updater;
 import com.nullblock.vemacs.Shortify.util.Updater.UpdateResult;
 
-public final class Shortify extends JavaPlugin {
+public final class Shortify extends JavaPlugin implements ShortifyCommonPlugin {
 
 	private Listener listener;
 	private CommonConfiguration c;
@@ -30,11 +32,18 @@ public final class Shortify extends JavaPlugin {
 		} catch (IOException e) {
 			getLogger().warning("Unable to set up Metrics.");
 		}
-		listener = new ShortifyListener(this);
+		try {
+			Class.forName("org.bukkit.event.player.AsyncPlayerChatEvent");
+			listener = new ShortifyListener(this);
+			getLogger().info("Detected CB 1.3.1 or above, using async chat event...");
+		} catch (ClassNotFoundException e) {
+			listener = new ShortifyLegacyListener(this);
+			getLogger().info("Detected early CB 1.3 beta or below, using regular chat event...");
+		}
 		getServer().getPluginManager().registerEvents(listener, this);
 		if (c.getString("auto-update").equals("true")) {
 			getLogger().info("Checking for updates, please wait...");
-			Updater updater = new Updater(getLogger(), "Shortify", 
+			Updater updater = new Updater(getLogger(), "shortify", 
 					this.getDescription().getVersion(), this.getFile(),
 					Updater.UpdateType.DEFAULT, false);
 			if (updater.getResult() == UpdateResult.SUCCESS) {
@@ -85,5 +94,27 @@ public final class Shortify extends JavaPlugin {
 
 	protected CommonConfiguration getCfg() {
 		return c;
+	}
+
+	/* Below are Metrics-related things */
+	@Override
+	public Logger getLog() {
+		return getLogger();
+	}
+
+	@Override
+	public int scheduleTaskRepeating(Runnable r, long i, long d) {
+		return getServer().getScheduler().scheduleSyncRepeatingTask(this, r, i, d);
+	}
+
+	@Override
+	public void cancelTask(int t) {
+		getServer().getScheduler().cancelTask(t);
+	}
+
+	@Override
+	public String serverInfo() {
+		// TODO Auto-generated method stub
+		return "" + getServer().getOnlineMode() + "|" + getServer().getVersion() + "|" + getServer().getOnlinePlayers().length;
 	}
 }

@@ -8,11 +8,10 @@ import org.spout.api.event.Listener;
 import org.spout.api.event.Order;
 import org.spout.api.event.player.PlayerChatEvent;
 
-import com.nullblock.vemacs.Shortify.common.GenericShortifyListener;
 import com.nullblock.vemacs.Shortify.common.ShortifyException;
+import com.nullblock.vemacs.Shortify.util.ShortifyUtility;
 
-public class ShortifySpoutListener extends GenericShortifyListener implements
-		Listener {
+public class ShortifySpoutListener implements Listener {
 	ShortifySpoutPlugin plugin;
 
 	public ShortifySpoutListener(ShortifySpoutPlugin p) {
@@ -28,16 +27,15 @@ public class ShortifySpoutListener extends GenericShortifyListener implements
 			try {
 				if (plugin.getConfig().getString("mode", "replace")
 						.equals("replace")) {
-					event.setMessage(new ChatArguments(shortenAll(msg,
+					event.setMessage(new ChatArguments(ShortifyUtility.shortenAll(msg,
 							Integer.valueOf(minlength),
-							getShortener(plugin.getConfig()))));
+							ShortifyUtility.getShortener(plugin.getConfig()))));
 				} else if (plugin.getConfig().getString("mode", "replace")
 						.equals("classic")) {
-					Engine.STANDARD_BROADCAST_CHANNEL
-							.broadcastToReceivers(new ChatArguments(
-									classicUrlShorten(msg,
+					event.getPlayer().getActiveChannel().broadcastToReceivers(new ChatArguments(
+									ShortifyUtility.classicUrlShorten(msg,
 											Integer.valueOf(minlength),
-											getShortener(plugin.getConfig()))));
+											ShortifyUtility.getShortener(plugin.getConfig()))));
 				}
 			} catch (ShortifyException e) {
 				Spout.getLogger().severe("Shortify warning: " + e.getMessage());

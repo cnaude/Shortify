@@ -104,6 +104,14 @@ public class CommonConfiguration {
 		return String.valueOf(get(node, valIfNotFound));
 	}
 
+	public Boolean getBoolean(Object node) {
+		return Boolean.parseBoolean(getString(node, "false"));
+	}
+
+	public Boolean getBoolean(Object node, Boolean valIfNotFound) {
+		return Boolean.parseBoolean(getString(node, String.valueOf(valIfNotFound)));
+	}
+	
 	public boolean contains(Object node) {
 		return configuration.containsKey(node);
 	}
