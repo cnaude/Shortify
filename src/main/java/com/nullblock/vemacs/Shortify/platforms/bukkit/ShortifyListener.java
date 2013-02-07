@@ -49,4 +49,29 @@ public class ShortifyListener implements Listener {
 			}
 		}
 	}
+	@EventHandler(priority = EventPriority.LOW)
+	public void playerCommand(PlayerCommandPreprocessEvent e) {
+				if (e.getPlayer().hasPermission("shortify.shorten")) {
+			try {
+				if (plugin.getCfg().getString("mode", "replace")
+						.equals("replace")) {
+					e.setMessage(ShortifyUtility.shortenAll(
+							e.getMessage(),
+							Integer.valueOf(plugin.getCfg().getString(
+									"minlength")), ShortifyUtility.getShortener(plugin.getCfg())));
+				} else if (plugin.getCfg().getString("mode", "replace")
+						.equals("classic")) {
+					new ShortifyClassicThread(plugin.getCfg(), plugin.getServer(), e.getMessage()).run();
+				}
+			} catch (NumberFormatException e1) {
+				Bukkit.getConsoleSender()
+						.sendMessage(
+								ChatColor.RED
+										+ "Warning: Your config.yml is invalid: minlength is not a number or invalid.");
+			} catch (ShortifyException e1) {
+				Bukkit.getConsoleSender().sendMessage(
+						ChatColor.RED + "Warning: " + e1.getMessage());
+			}
+		}
+	}
 }
