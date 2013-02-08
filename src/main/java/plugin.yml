@@ -11,14 +11,22 @@ permissions:
     shortify.*:
         description: Allows the use of all Shortify functions
         children:
-            shortify.shorten: true
+            shortify.shorten.*: true
             shortify.admin: true
+    shortify.shorten.*:
+        description: Allows the shortening of all URLs
+        children:
+            shortify.shorten.msg: true
+            shortify.shorten: true
     shortify.shorten:
         description: Allows you to shorten a URL
         default: true
     shortify.admin:
         description: Allows you to reload Shortify
         default: op
+    shortify.shorten.msg:
+        description: Shortens URLs in all commands
+        default: true
 commands:
     shortify:
         description: Shortify administration command
