@@ -16,7 +16,7 @@ permissions:
     shortify.shorten.*:
         description: Allows the shortening of all URLs
         children:
-            shortify.shorten.msg: true
+            shortify.shorten.cmd: true
             shortify.shorten: true
     shortify.shorten:
         description: Allows you to shorten a URL
@@ -24,7 +24,7 @@ permissions:
     shortify.admin:
         description: Allows you to reload Shortify
         default: op
-    shortify.shorten.msg:
+    shortify.shorten.cmd:
         description: Shortens URLs in all commands
         default: true
 commands:
