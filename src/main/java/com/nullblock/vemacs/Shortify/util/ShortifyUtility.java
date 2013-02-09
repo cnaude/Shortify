@@ -155,4 +155,24 @@ public class ShortifyUtility {
 		}
 		return output.substring(0, output.length() - 3);
 	}
+	public static String replaceColors(String text) {
+	//copied from http://forums.bukkit.org/threads/simple-colors-parsing-method.32058/#post-1251988
+        char[] chrarray = text.toCharArray();
+ 
+        for (int index = 0; index < chrarray.length; index ++) {
+            char chr = chrarray[index];
+            if (chr != '&') {
+                continue;
+            }
+ 
+            if ((index + 1) == chrarray.length) {
+                break;
+            }
+             char forward = chrarray[index + 1];
+            if ((forward >= '0' && forward <= '9') || (forward >= 'a' && forward <= 'f') || (forward >= 'k' && forward <= 'r')) {
+                chrarray[index] = '\u00A7';
+            }
+        }
+         return new String(chrarray);
+    	}
 }
