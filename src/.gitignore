@@ -2,3 +2,9 @@ bin/*
 .settings/*
 .project
 .classpath
+.idea/
+*.iml
+*.iws
+.DS_Store
+log/
+target/
