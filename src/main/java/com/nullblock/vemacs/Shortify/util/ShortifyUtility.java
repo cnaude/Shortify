@@ -20,15 +20,14 @@ import com.nullblock.vemacs.Shortify.common.ShortenerTx0;
 import com.nullblock.vemacs.Shortify.common.ShortenerYourls;
 import com.nullblock.vemacs.Shortify.common.ShortenerYu8Me;
 import com.nullblock.vemacs.Shortify.common.ShortifyException;
-import com.nullblock.vemacs.Shortify.util.MetricsImpl.Graph;
-import com.nullblock.vemacs.Shortify.util.MetricsImpl.Plotter;
+import com.nullblock.vemacs.Shortify.util.Metrics;
 
 public class ShortifyUtility {
-	public static void setupMetrics(MetricsImpl metrics, CommonConfiguration cc) throws IOException {
+	public static void setupMetrics(Metrics metrics, CommonConfiguration cc) throws IOException {
 		// Cause I won't live and die
 		// For the part with a dirty CD-i
-		Graph g = metrics.createGraph("URL Shortener");
-		g.addPlotter(new Plotter(cc.getString("shortener", "isgd")) {
+		Metrics.Graph g = metrics.createGraph("URL Shortener");
+		g.addPlotter(new Metrics.Plotter(cc.getString("shortener", "isgd")) {
 			@Override
 			public int getValue() {
 				return 1;

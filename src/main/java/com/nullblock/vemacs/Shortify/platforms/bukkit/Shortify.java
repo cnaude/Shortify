@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.nullblock.vemacs.Shortify.common.CommonConfiguration;
 import com.nullblock.vemacs.Shortify.common.PluginCommon;
 import com.nullblock.vemacs.Shortify.common.ShortifyCommonPlugin;
+import com.nullblock.vemacs.Shortify.util.Metrics;
 import com.nullblock.vemacs.Shortify.util.ShortifyUtility;
 import com.nullblock.vemacs.Shortify.util.Updater;
 import com.nullblock.vemacs.Shortify.util.Updater.UpdateResult;
@@ -27,7 +28,7 @@ public final class Shortify extends JavaPlugin implements ShortifyCommonPlugin {
 		c = PluginCommon.loadCfg(getFile());
 		PluginCommon.verifyConfiguration(c, getLogger());
 		try {
-			ShortifyUtility.setupMetrics(new Metrics(this), c);
+			ShortifyUtility.setupMetrics(new Metrics(getDescription().getName(), getDescription().getVersion(), this.getFile().getParentFile(), this), c);
 			getLogger().info("Metrics setup.");
 		} catch (IOException e) {
 			getLogger().warning("Unable to set up Metrics.");
