@@ -122,6 +122,10 @@ public class CommonConfiguration {
 		s.putAll(defaults);
 		return s;
 	}
+	
+	public void mergeDefaults() {
+		configuration = mergeDefaultsAndConfig();
+	}
 
 	public void dumpYaml(File f) throws IOException {
 		BufferedWriter s = new BufferedWriter(new FileWriter(f));

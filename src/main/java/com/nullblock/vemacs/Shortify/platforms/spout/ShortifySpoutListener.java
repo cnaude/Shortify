@@ -1,6 +1,5 @@
 package com.nullblock.vemacs.Shortify.platforms.spout;
 
-import org.spout.api.Engine;
 import org.spout.api.Spout;
 import org.spout.api.chat.ChatArguments;
 import org.spout.api.event.EventHandler;
@@ -29,7 +28,7 @@ public class ShortifySpoutListener implements Listener {
 						.equals("replace")) {
 					event.setMessage(new ChatArguments(ShortifyUtility.shortenAll(msg,
 							Integer.valueOf(minlength),
-							ShortifyUtility.getShortener(plugin.getConfig()), plugin.getConfig().getString("prefix"))));
+							ShortifyUtility.getShortener(plugin.getConfig()), "")));//plugin.getConfig().getString("prefix"))));
 				} else if (plugin.getConfig().getString("mode", "replace")
 						.equals("classic")) {
 					event.getPlayer().getActiveChannel().broadcastToReceivers(new ChatArguments(

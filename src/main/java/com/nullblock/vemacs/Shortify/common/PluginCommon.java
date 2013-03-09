@@ -1,12 +1,8 @@
 package com.nullblock.vemacs.Shortify.common;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Logger;
-
-import com.nullblock.vemacs.Shortify.util.ShortifyUtility;
 
 public class PluginCommon {
 
@@ -41,50 +37,32 @@ public class PluginCommon {
 	}
 
 	public static CommonConfiguration loadCfg(File pl) {
-		CommonConfiguration c = new CommonConfiguration(), c3 = null;
+		CommonConfiguration c = new CommonConfiguration();
 		c.addDefault("mode", "replace");
 		c.addDefault("shortener", "isgd");
 		c.addDefault("auto-update", "true");
-		c.addDefault("prefix", "'&n'");
+		c.addDefault("prefix", "&n");
+		c.addDefault("minlength", "20");
 		c.addDefault("googAPI", "none");
 		c.addDefault("bitlyUSER", "none");
 		c.addDefault("bitlyAPI", "none");
 		c.addDefault("yourlsURI", "none");
 		c.addDefault("yourlsUSER", "none");
 		c.addDefault("yourlsPASS", "none");
-		BufferedReader c2 = null;
-		try {
-			c2 = ShortifyUtility.getUrl("jar:file:" + pl.getAbsolutePath()
-					+ "!/config.yml");
-		} catch (IOException e3) {
-			// TODO Auto-generated catch block
-			e3.printStackTrace();
-		}
 
-		try {
-			c3 = new CommonConfiguration(c2);
-		} catch (FileNotFoundException e3) {
-			// TODO Auto-generated catch block
-			e3.printStackTrace();
-		}
 		File dataDir = new File(pl.getParent() + "/Shortify");
 		File cfg = new File(dataDir, "config.yml");
 		try {
 			dataDir.mkdirs();
-			c = new CommonConfiguration(cfg);
-			try {
-				c.dumpYaml(cfg);
-			} catch (IOException e1) {
-				// Ignore
-			}
-		} catch (FileNotFoundException e) {
-			c = c3;
-			try {
+			if (!cfg.exists()) {
 				cfg.createNewFile();
 				c.dumpYaml(cfg);
-			} catch (IOException e1) {
-				// Ignore
+			} else {
+				c.loadYaml(cfg);
+				c.mergeDefaults();
+				c.dumpYaml(cfg);
 			}
+		} catch (IOException e) {
 		}
 		return c;
 	}
