@@ -3,6 +3,11 @@ Shortify
 
 The most advanced URL shortener for Bukkit. A fast and configurable plugin that automatically uses goo.gl, bit.ly, TinyURL, turl.ca (experimental) or is.gd to shorten all detected URLs in a player message.
 
+Builds
+------
+
+Dev builds can be found on [Jenkins](http://ci.md-5.net/job/Shortify/)
+
 Configuration
 -------------
 
