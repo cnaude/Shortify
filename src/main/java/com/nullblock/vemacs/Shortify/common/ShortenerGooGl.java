@@ -56,7 +56,7 @@ public class ShortenerGooGl implements Shortener {
 		}
 		catch (IOException ex)
 		{
-			shortUrl = longUrl;
+			throw new ShortifyException("Unable to shorten via goo.gl: " + ex.getMessage());
 		}
 		return shortUrl;
 	}
