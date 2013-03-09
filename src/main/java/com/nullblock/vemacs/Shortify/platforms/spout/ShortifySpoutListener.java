@@ -29,7 +29,7 @@ public class ShortifySpoutListener implements Listener {
 						.equals("replace")) {
 					event.setMessage(new ChatArguments(ShortifyUtility.shortenAll(msg,
 							Integer.valueOf(minlength),
-							ShortifyUtility.getShortener(plugin.getConfig()), "")));
+							ShortifyUtility.getShortener(plugin.getConfig()), plugin.getConfig().getString("prefix"))));
 				} else if (plugin.getConfig().getString("mode", "replace")
 						.equals("classic")) {
 					event.getPlayer().getActiveChannel().broadcastToReceivers(new ChatArguments(
