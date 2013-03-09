@@ -45,7 +45,7 @@ public class PluginCommon {
 		c.addDefault("mode", "replace");
 		c.addDefault("shortener", "isgd");
 		c.addDefault("auto-update", "true");
-		c.addDefault("prefix", "&n");
+		c.addDefault("prefix", "'&n'");
 		c.addDefault("googAPI", "none");
 		c.addDefault("bitlyUSER", "none");
 		c.addDefault("bitlyAPI", "none");

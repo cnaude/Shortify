@@ -37,7 +37,7 @@ public class ShortifyLegacyListener implements Listener {
 					e.setMessage(ShortifyUtility.shortenAll(
 							e.getMessage(),
 							Integer.valueOf(plugin.getCfg().getString(
-									"minlength")), shortener));
+									"minlength")), shortener, ""));
 				} else if (plugin.getCfg().getString("mode", "replace")
 						.equals("classic")) {
 					new ShortifyClassicThread(plugin.getCfg(), plugin.getServer(), e.getMessage()).run();

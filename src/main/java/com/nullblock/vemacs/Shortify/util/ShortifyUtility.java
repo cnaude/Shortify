@@ -63,8 +63,9 @@ public class ShortifyUtility {
 	 * @throws ShortifyException
 	 */
 	public static String shortenAll(String txt, Integer minln,
-			Shortener shortener) throws ShortifyException {
+			Shortener shortener, String prefix) throws ShortifyException {
 		// From Daring Fireball
+		prefix = replaceColors(prefix);
 		Pattern p = Pattern
 				.compile("(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?������]))");
 		Matcher m = p.matcher(txt);
@@ -74,8 +75,14 @@ public class ShortifyUtility {
 			urlTmp = m.group(1);
 			if (urlTmp.length() >= minln) {
 				try {
-					urlTmp = shortener.getShortenedUrl(java.net.URLEncoder
-							.encode(urlTmp, "UTF-8"));
+					if (!prefix.equals("")){
+					urlTmp = prefix + shortener.getShortenedUrl(java.net.URLEncoder
+							.encode(urlTmp, "UTF-8")) + replaceColors("&r");
+					}
+					else {
+							urlTmp = shortener.getShortenedUrl(java.net.URLEncoder
+									.encode(urlTmp, "UTF-8"));
+					}
 					// might as well put the encoder in the listener to
 					// prevent possible injections
 				} catch (UnsupportedEncodingException e1) {

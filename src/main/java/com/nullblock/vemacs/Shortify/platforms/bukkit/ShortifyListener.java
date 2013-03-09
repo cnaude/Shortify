@@ -34,7 +34,8 @@ public class ShortifyListener implements Listener {
 					e.setMessage(ShortifyUtility.shortenAll(
 							e.getMessage(),
 							Integer.valueOf(plugin.getCfg().getString(
-									"minlength")), ShortifyUtility.getShortener(plugin.getCfg())));
+									"minlength")), ShortifyUtility.getShortener(plugin.getCfg()), plugin.getCfg().getString(
+									"prefix")));
 				} else if (plugin.getCfg().getString("mode", "replace")
 						.equals("classic")) {
 					new ShortifyClassicThread(plugin.getCfg(), plugin.getServer(), e.getMessage()).run();
@@ -55,11 +56,11 @@ public class ShortifyListener implements Listener {
 				if (e.getPlayer().hasPermission("shortify.shorten.cmd")) {
 			try {
 
-					e.setMessage(ShortifyUtility.replaceColors( plugin.getCfg().getString("prefix")) + 
-ShortifyUtility.shortenAll(
+					e.setMessage( ShortifyUtility.shortenAll(
 							e.getMessage(),
 							Integer.valueOf(plugin.getCfg().getString(
-									"minlength")), ShortifyUtility.getShortener(plugin.getCfg())) + ChatColor.RESET );
+									"minlength")), ShortifyUtility.getShortener(plugin.getCfg()), plugin.getCfg().getString(
+											"prefix")));
 
 			} catch (NumberFormatException e1) {
 				Bukkit.getConsoleSender()

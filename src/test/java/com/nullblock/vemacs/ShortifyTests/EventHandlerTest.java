@@ -20,7 +20,7 @@ public class EventHandlerTest {
 		try {
 			msge = "This is a sample text and should point to a Google query for Shortify: http://www.google.com/search?q=Shortify";
 			msg = ShortifyUtility.shortenAll(msge, 1,
-					new ShortenerIsGd());
+					new ShortenerIsGd(), "");
 			if (!msg.startsWith("This is a sample text and should point to a Google query for Shortify: http://is.gd/")) {
 				System.out.println("Expected message mismatch!");
 				System.out.println("Got:");
@@ -39,7 +39,7 @@ public class EventHandlerTest {
 		try {
 			msge = "This is a sample text without any URLs.";
 			msg = ShortifyUtility.shortenAll(msge, 1,
-					new ShortenerIsGd());
+					new ShortenerIsGd(), "");
 			if (!msg.equals(msge)) {
 				System.out.println("Expected message mismatch!");
 				System.out.println("Got:");
