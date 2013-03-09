@@ -55,10 +55,11 @@ public class ShortifyListener implements Listener {
 				if (e.getPlayer().hasPermission("shortify.shorten.cmd")) {
 			try {
 
-					e.setMessage(ShortifyUtility.shortenAll(
+					e.setMessage(ShortifyUtility.replaceColors( plugin.getCfg().getString("prefix")) + 
+ShortifyUtility.shortenAll(
 							e.getMessage(),
 							Integer.valueOf(plugin.getCfg().getString(
-									"minlength")), ShortifyUtility.getShortener(plugin.getCfg())));
+									"minlength")), ShortifyUtility.getShortener(plugin.getCfg())) + ChatColor.RESET );
 
 			} catch (NumberFormatException e1) {
 				Bukkit.getConsoleSender()
