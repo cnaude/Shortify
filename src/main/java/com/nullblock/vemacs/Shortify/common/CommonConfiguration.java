@@ -118,8 +118,8 @@ public class CommonConfiguration {
 
 	private Map<Object, Object> mergeDefaultsAndConfig() {
 		HashMap<Object, Object> s = new HashMap<Object, Object>();
-		s.putAll(configuration);
 		s.putAll(defaults);
+		s.putAll(configuration);
 		return s;
 	}
 	
