@@ -87,8 +87,7 @@ public class UrlShortenerTest {
 		// attempt to shorten the BukkitDev page.
 		System.out.println("---- No specially configured shorteners");
 		Class[] shorteners = { ShortenerIsGd.class, ShortenerTinyUrl.class,
-				ShortenerTurlCa.class, ShortenerPasteDebianNet.class,
-				ShortenerTx0.class, ShortenerYu8Me.class };
+				ShortenerTurlCa.class, ShortenerTx0.class, ShortenerYu8Me.class };
 		for (int i = 0; i < shorteners.length; i++) {
 			// Attempt to shorten
 			doShortenerTest((Shortener) shorteners[i].getConstructor()
