@@ -19,6 +19,7 @@ import com.nullblock.vemacs.Shortify.common.Shortener;
 import com.nullblock.vemacs.Shortify.common.ShortenerBitLy;
 import com.nullblock.vemacs.Shortify.common.ShortenerGooGl;
 import com.nullblock.vemacs.Shortify.common.ShortenerIsGd;
+import com.nullblock.vemacs.Shortify.common.ShortenerNigGr;
 import com.nullblock.vemacs.Shortify.common.ShortenerPasteDebianNet;
 import com.nullblock.vemacs.Shortify.common.ShortenerTinyUrl;
 import com.nullblock.vemacs.Shortify.common.ShortenerTurlCa;
@@ -87,7 +88,7 @@ public class UrlShortenerTest {
 		// attempt to shorten the BukkitDev page.
 		System.out.println("---- No specially configured shorteners");
 		Class[] shorteners = { ShortenerIsGd.class, ShortenerTinyUrl.class,
-				ShortenerTurlCa.class, ShortenerTx0.class, ShortenerYu8Me.class };
+				ShortenerTurlCa.class, ShortenerTx0.class, ShortenerYu8Me.class, ShortenerNigGr.class };
 		for (int i = 0; i < shorteners.length; i++) {
 			// Attempt to shorten
 			doShortenerTest((Shortener) shorteners[i].getConstructor()

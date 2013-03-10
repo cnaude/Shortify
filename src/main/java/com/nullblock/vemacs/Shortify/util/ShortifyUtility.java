@@ -13,6 +13,7 @@ import com.nullblock.vemacs.Shortify.common.Shortener;
 import com.nullblock.vemacs.Shortify.common.ShortenerBitLy;
 import com.nullblock.vemacs.Shortify.common.ShortenerGooGl;
 import com.nullblock.vemacs.Shortify.common.ShortenerIsGd;
+import com.nullblock.vemacs.Shortify.common.ShortenerNigGr;
 import com.nullblock.vemacs.Shortify.common.ShortenerPasteDebianNet;
 import com.nullblock.vemacs.Shortify.common.ShortenerTinyUrl;
 import com.nullblock.vemacs.Shortify.common.ShortenerTurlCa;
@@ -121,6 +122,9 @@ public class ShortifyUtility {
 		}
 		if (service.equals("isgd")) {
 			shortener = new ShortenerIsGd();
+		}
+		if (service.equals("niggr")) {
+			shortener = new ShortenerNigGr();
 		}
 		// Accepting both frmli and pdo
 		if (service.equals("frmli") || service.equals("pdo")) {
