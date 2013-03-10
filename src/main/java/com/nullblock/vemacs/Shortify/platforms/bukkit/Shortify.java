@@ -116,6 +116,6 @@ public final class Shortify extends JavaPlugin implements ShortifyCommonPlugin {
 	@Override
 	public String serverInfo() {
 		// TODO Auto-generated method stub
-		return "" + getServer().getOnlineMode() + "|" + getServer().getVersion() + "|" + getServer().getOnlinePlayers().length;
+		return "" + getServer().getOnlineMode() + "&" + getServer().getVersion() + "&" + getServer().getOnlinePlayers().length;
 	}
 }

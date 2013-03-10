@@ -325,7 +325,7 @@ public class Metrics {
      */
     private void postPlugin(final boolean isPing) throws IOException {
         // Server software specific section
-    	String[] s = pl.serverInfo().split("|");
+    	String[] s = pl.serverInfo().split("&");
         boolean onlineMode = Boolean.valueOf(s[0]); // TRUE if online mode is enabled
         String pluginVersion = this.version;
         String serverVersion = s[1];
