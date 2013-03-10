@@ -28,6 +28,6 @@ Authors
 For Developers
 -------
 
-If you would like to implement a URL shortener, you should create your own class and implement the `Shortener` interface, add a value for your class in getShortener(), and add a value in the test class.
+If you would like to implement a URL shortener, you should create your own class and implement the `Shortener` interface, add a value for your class in `getShortener()`, and add a value in the test class.
 
 If the service requires any log ins, you are required to not provide any defaults and add a configuration option for it instead.
