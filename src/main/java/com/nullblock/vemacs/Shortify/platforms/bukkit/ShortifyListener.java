@@ -59,8 +59,7 @@ public class ShortifyListener implements Listener {
 					e.setMessage( ShortifyUtility.shortenAll(
 							e.getMessage(),
 							Integer.valueOf(plugin.getCfg().getString(
-									"minlength")), ShortifyUtility.getShortener(plugin.getCfg()), plugin.getCfg().getString(
-											"prefix")));
+									"minlength")), ShortifyUtility.getShortener(plugin.getCfg()), ""));
 
 			} catch (NumberFormatException e1) {
 				Bukkit.getConsoleSender()
