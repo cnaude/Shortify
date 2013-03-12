@@ -4,11 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.net.URLDecoder;
 
 public class ShortenerGooGl implements Shortener {
 
@@ -21,6 +21,11 @@ public class ShortenerGooGl implements Shortener {
 	public String getShortenedUrl(String toshort) throws ShortifyException {
 		//copypasta code from http://www.glodde.com/blog/default.aspx?id=51&t=Java-Use-googl-URL-shorten-from-Java
 		String shortUrl = "";
+		try {
+			toshort = URLDecoder.decode(toshort, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+		}
 		String longUrl = toshort;
 		String googUrl = "https://www.googleapis.com/urlshortener/v1/url?key=" + a;
 		try
