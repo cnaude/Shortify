@@ -89,6 +89,10 @@ public class ShortifyUtility {
 				} catch (UnsupportedEncodingException e1) {
 					// do absolutely nothing
 				}
+			} else {
+				if (!prefix.equals("")){
+					urlTmp = prefix + urlTmp + replaceColors("&r");
+				}
 			}
 			m.appendReplacement(sb, "");
 			sb.append(urlTmp);
