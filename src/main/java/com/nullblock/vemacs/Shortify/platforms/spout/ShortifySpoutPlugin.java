@@ -2,7 +2,6 @@ package com.nullblock.vemacs.Shortify.platforms.spout;
 
 import java.util.logging.Logger;
 
-import org.spout.api.Spout;
 import org.spout.api.plugin.CommonPlugin;
 import org.spout.api.scheduler.TaskPriority;
 import org.spout.api.event.Listener;
@@ -38,7 +37,7 @@ public class ShortifySpoutPlugin extends CommonPlugin implements ShortifyCommonP
 			getLogger().warning("Unable to set up Metrics.");
 		}
 		listener = new ShortifySpoutListener(this);
-		Spout.getEventManager().registerEvents(listener, this);
+		getEngine().getEventManager().registerEvents(listener, this);
 		if (c.getString("auto-update").equals("true")) {
 			getLogger().info("Checking for updates, please wait...");
 			Updater updater = new Updater(getLogger(), "Shortify", 
@@ -90,7 +89,7 @@ public class ShortifySpoutPlugin extends CommonPlugin implements ShortifyCommonP
 	@Override
 	public String serverInfo() {
 		// As Spout does not have a notation of "Online Mode", we will assume that yes, we're in online mode.
-		return "true|" + getEngine().getVersion() + "|" + getEngine().getAllPlayers().size();
+		return "true&" + getEngine().getVersion() + "&" + getEngine().getAllPlayers().size();
 	}
 
 }

@@ -1,6 +1,5 @@
 package com.nullblock.vemacs.Shortify.platforms.spout;
 
-import org.spout.api.Spout;
 import org.spout.api.chat.ChatArguments;
 import org.spout.api.event.EventHandler;
 import org.spout.api.event.Listener;
@@ -19,7 +18,7 @@ public class ShortifySpoutListener implements Listener {
 
 	@EventHandler(order = Order.LATEST)
 	public void playerChat(PlayerChatEvent event) {
-		// Spout is an interesting case.
+		/* Spout is an interesting case. */
 		if (event.getPlayer().hasPermission("shortify.shorten")) {
 			String msg = event.getMessage().getPlainString();
 			String minlength = plugin.getConfig().getString("minlength");
@@ -37,9 +36,9 @@ public class ShortifySpoutListener implements Listener {
 											ShortifyUtility.getShortener(plugin.getConfig()))));
 				}
 			} catch (ShortifyException e) {
-				Spout.getLogger().severe("Shortify warning: " + e.getMessage());
+				plugin.getLog().severe("Shortify warning: " + e.getMessage());
 			} catch (NumberFormatException e) {
-				Spout.getLogger()
+				plugin.getLog()
 						.severe("Shortify warning: Your configuration file is not correct, the minlength parameter is invalid.");
 			}
 		}
