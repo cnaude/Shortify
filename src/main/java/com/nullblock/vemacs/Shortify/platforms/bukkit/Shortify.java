@@ -28,11 +28,13 @@ public final class Shortify extends JavaPlugin implements ShortifyCommonPlugin {
 		// Load config.yml with snakeyaml
 		c = PluginCommon.loadCfg(getFile());
 		PluginCommon.verifyConfiguration(c, getLogger());
-		try {
-			ShortifyUtility.setupMetrics(new Metrics(getDescription().getName(), getDescription().getVersion(), this.getFile().getParentFile(), this), c);
-			getLogger().info("Metrics setup.");
-		} catch (IOException e) {
-			getLogger().warning("Unable to set up Metrics.");
+		if (this.getConfig().getBoolean("metrics")) {
+			try {
+				ShortifyUtility.setupMetrics(new Metrics(getDescription().getName(), getDescription().getVersion(), this.getFile().getParentFile(), this), c);
+				getLogger().info("Metrics setup.");
+			} catch (IOException e) {
+				getLogger().warning("Unable to set up Metrics.");
+			}
 		}
 		try {
 			Class.forName("org.bukkit.event.player.AsyncPlayerChatEvent");
@@ -50,10 +52,10 @@ public final class Shortify extends JavaPlugin implements ShortifyCommonPlugin {
 					Updater.UpdateType.DEFAULT, false);
 			if (updater.getResult() == UpdateResult.SUCCESS) {
 				getLogger()
-						.info(ChatColor.GREEN
-								+ "An update (version "
-								+ updater.getLatestVersionString()
-								+ ") of Shortify was found and installed. Please restart your server to use the new version.");
+				.info(ChatColor.GREEN
+						+ "An update (version "
+						+ updater.getLatestVersionString()
+						+ ") of Shortify was found and installed. Please restart your server to use the new version.");
 			}
 			if (updater.getResult() == UpdateResult.NO_UPDATE) {
 				getLogger().info("No updates found.");

@@ -29,3 +29,5 @@ auto-update: true
 # classic: displays URLs
 # replace: usual, replaces shortened URLs
 mode: replace
+# Enables or disables Metrics
+metrics: true
