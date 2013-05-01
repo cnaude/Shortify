@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import com.nullblock.vemacs.Shortify.common.CommonConfiguration;
 import com.nullblock.vemacs.Shortify.common.PluginCommon;
@@ -105,7 +106,8 @@ public final class Shortify extends JavaPlugin implements ShortifyCommonPlugin {
 
 	@Override
 	public int scheduleTaskRepeating(Runnable r, long i, long d) {
-		return getServer().getScheduler().scheduleSyncRepeatingTask(this, r, i, d);
+		BukkitTask metrics = getServer().getScheduler().runTaskTimerAsynchronously(this, r, i, d);
+		return metrics.getTaskId();
 	}
 
 	@Override
