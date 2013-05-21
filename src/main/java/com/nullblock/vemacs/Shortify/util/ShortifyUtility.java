@@ -15,6 +15,7 @@ import com.nullblock.vemacs.Shortify.common.ShortenerGooGl;
 import com.nullblock.vemacs.Shortify.common.ShortenerIsGd;
 import com.nullblock.vemacs.Shortify.common.ShortenerNigGr;
 import com.nullblock.vemacs.Shortify.common.ShortenerPasteDebianNet;
+import com.nullblock.vemacs.Shortify.common.ShortenerSafeMN;
 import com.nullblock.vemacs.Shortify.common.ShortenerTinyUrl;
 import com.nullblock.vemacs.Shortify.common.ShortenerTurlCa;
 import com.nullblock.vemacs.Shortify.common.ShortenerTx0;
@@ -139,6 +140,9 @@ public class ShortifyUtility {
 		}
 		if (service.equals("yu8me") || service.equals("yu8")) {
 			shortener = new ShortenerYu8Me();
+		}
+		if(service.equals("safemn")){
+			shortener = new ShortenerSafeMN();
 		}
 		if (shortener == null) {
 			shortener = new ShortenerIsGd();
