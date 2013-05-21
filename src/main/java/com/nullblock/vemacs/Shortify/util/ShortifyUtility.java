@@ -15,6 +15,7 @@ import com.nullblock.vemacs.Shortify.common.ShortenerGooGl;
 import com.nullblock.vemacs.Shortify.common.ShortenerIsGd;
 import com.nullblock.vemacs.Shortify.common.ShortenerNigGr;
 import com.nullblock.vemacs.Shortify.common.ShortenerPasteDebianNet;
+import com.nullblock.vemacs.Shortify.common.ShortenerSafeMN;
 import com.nullblock.vemacs.Shortify.common.ShortenerTinyUrl;
 import com.nullblock.vemacs.Shortify.common.ShortenerTurlCa;
 import com.nullblock.vemacs.Shortify.common.ShortenerTx0;
