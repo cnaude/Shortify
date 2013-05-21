@@ -140,6 +140,9 @@ public class ShortifyUtility {
 		if (service.equals("yu8me") || service.equals("yu8")) {
 			shortener = new ShortenerYu8Me();
 		}
+		if(service.equals("safemn")){
+			shortener = new ShortenerSafeMN();
+		}
 		if (shortener == null) {
 			shortener = new ShortenerIsGd();
 		}
