@@ -1,8 +1,0 @@
-name: Shortify
-version: 1.5.0
-description: The most advanced URL shortening plugin for Bukkit -- now for Spout!
-author: vemacs, minecrafter, Racorac
-website: http://dev.bukkit.org/server-mods/shortify/
-main: com.nullblock.vemacs.Shortify.platforms.spout.ShortifySpoutPlugin
-platform: SERVER
-reload: true
