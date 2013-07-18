@@ -1,6 +1,6 @@
 name: Shortify
 main: com.nullblock.vemacs.Shortify.platforms.bukkit.Shortify
-version: 1.5.1
+version: 1.5.2
 description: The most advanced URL shortener for Bukkit, Spout, and Forge. A fast and configurable plugin that automatically uses goo.gl, bit.ly, TinyURL, turl.ca (experimental) or is.gd to shorten all detected URLs in a player message.
 author: vemacs
 authors:
