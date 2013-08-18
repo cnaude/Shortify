@@ -45,6 +45,7 @@ public final class Shortify extends JavaPlugin {
 					.info("Detected early CB 1.3 beta or below, using regular chat event...");
 		}
 		getServer().getPluginManager().registerEvents(listener, this);
+		getServer().getPluginManager().registerEvents(new ShortifyCommandListener(this), this);
 		ShortifyUtility.dumpData(getFile(), Globals.c);
 	}
 
