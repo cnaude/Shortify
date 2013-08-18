@@ -1,36 +1,34 @@
 package com.nullblock.vemacs.Shortify.platforms.bukkit;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
+import org.mcstats.Metrics;
 
-import com.nullblock.vemacs.Shortify.common.CommonConfiguration;
-import com.nullblock.vemacs.Shortify.common.PluginCommon;
-import com.nullblock.vemacs.Shortify.common.ShortifyCommonPlugin;
-import com.nullblock.vemacs.Shortify.util.Metrics;
+import com.nullblock.vemacs.Shortify.common.Globals;
 import com.nullblock.vemacs.Shortify.util.ShortifyUtility;
-import com.nullblock.vemacs.Shortify.util.Updater;
-import com.nullblock.vemacs.Shortify.util.Updater.UpdateResult;
 
-public final class Shortify extends JavaPlugin implements ShortifyCommonPlugin {
+public final class Shortify extends JavaPlugin {
 
 	private Listener listener;
-	private CommonConfiguration c;
-
+	
 	@Override
 	public void onEnable() {
 		// Load config.yml with snakeyaml
-		c = PluginCommon.loadCfg(getFile());
-		PluginCommon.verifyConfiguration(c, getLogger());
-		if (this.getConfig().getBoolean("metrics")) {
+		Globals.c = ShortifyUtility.loadCfg(getFile());
+		if (Globals.c.getBoolean("update")) {
+			new Updater(this, "slug", this.getFile(), Updater.UpdateType.DEFAULT, false);
+		}
+		Globals.sm = ShortifyUtility.setupShorteners();
+		Globals.sm = ShortifyUtility.reloadConfigShorteners(Globals.sm, Globals.c);
+		ShortifyUtility.verifyConfiguration(Globals.c, getLogger());
+		if (Globals.c.getBoolean("metrics")) {
 			try {
-				ShortifyUtility.setupMetrics(new Metrics(getDescription().getName(), getDescription().getVersion(), this.getFile().getParentFile(), this), c);
+				ShortifyUtility.setupMetrics(new Metrics(this), Globals.c);
 				getLogger().info("Metrics setup.");
 			} catch (IOException e) {
 				getLogger().warning("Unable to set up Metrics.");
@@ -39,36 +37,20 @@ public final class Shortify extends JavaPlugin implements ShortifyCommonPlugin {
 		try {
 			Class.forName("org.bukkit.event.player.AsyncPlayerChatEvent");
 			listener = new ShortifyListener(this);
-			getLogger().info("Detected CB 1.3.1 or above, using async chat event...");
+			getLogger().info(
+					"Detected CB 1.3.1 or above, using async chat event...");
 		} catch (ClassNotFoundException e) {
 			listener = new ShortifyLegacyListener(this);
-			getLogger().info("Detected early CB 1.3 beta or below, using regular chat event...");
+			getLogger()
+					.info("Detected early CB 1.3 beta or below, using regular chat event...");
 		}
 		getServer().getPluginManager().registerEvents(listener, this);
-		if (c.getString("auto-update").equals("true")) {
-			getLogger().info("Checking for updates, please wait...");
-			Updater updater = new Updater(getLogger(), "shortify", 
-					this.getDescription().getVersion(), this.getFile(),
-					Updater.UpdateType.DEFAULT, false);
-			if (updater.getResult() == UpdateResult.SUCCESS) {
-				getLogger()
-				.info(ChatColor.GREEN
-						+ "An update (version "
-						+ updater.getLatestVersionString()
-						+ ") of Shortify was found and installed. Please restart your server to use the new version.");
-			}
-			if (updater.getResult() == UpdateResult.NO_UPDATE) {
-				getLogger().info("No updates found.");
-			}
-			updater = null;
-		}
-		PluginCommon.dumpData(getFile(), c);
+		ShortifyUtility.dumpData(getFile(), Globals.c);
 	}
 
 	@Override
 	public void onDisable() {
 		listener = null;
-		c = null;
 	}
 
 	public boolean onCommand(CommandSender sender, Command command,
@@ -83,8 +65,9 @@ public final class Shortify extends JavaPlugin implements ShortifyCommonPlugin {
 		// This is currently only /shortify reload
 		if (args.length > 0) {
 			if (args[0].equals("reload")) {
-				c = PluginCommon.loadCfg(getFile());
-				PluginCommon.verifyConfiguration(c, getLogger());
+				Globals.c = ShortifyUtility.loadCfg(getFile());
+				ShortifyUtility.verifyConfiguration(Globals.c, getLogger());
+				Globals.sm = ShortifyUtility.reloadConfigShorteners(Globals.sm, Globals.c);
 				sender.sendMessage(ChatColor.GREEN
 						+ "Shortify has been reloaded.");
 			} else {
@@ -94,32 +77,5 @@ public final class Shortify extends JavaPlugin implements ShortifyCommonPlugin {
 			sender.sendMessage("/shortify reload");
 		}
 		return true;
-	}
-
-	protected CommonConfiguration getCfg() {
-		return c;
-	}
-
-	/* Below are Metrics-related things */
-	@Override
-	public Logger getLog() {
-		return getLogger();
-	}
-
-	@Override
-	public int scheduleTaskRepeating(Runnable r, long i, long d) {
-		BukkitTask metrics = getServer().getScheduler().runTaskTimerAsynchronously(this, r, i, d);
-		return metrics.getTaskId();
-	}
-
-	@Override
-	public void cancelTask(int t) {
-		getServer().getScheduler().cancelTask(t);
-	}
-
-	@Override
-	public String serverInfo() {
-		// TODO Auto-generated method stub
-		return "" + getServer().getOnlineMode() + "&" + getServer().getVersion() + "&" + getServer().getOnlinePlayers().length;
 	}
 }

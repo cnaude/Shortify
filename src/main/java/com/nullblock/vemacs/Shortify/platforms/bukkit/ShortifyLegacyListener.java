@@ -6,13 +6,13 @@ package com.nullblock.vemacs.Shortify.platforms.bukkit;
  * 
  */
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 
+import com.nullblock.vemacs.Shortify.common.Globals;
 import com.nullblock.vemacs.Shortify.common.Shortener;
 import com.nullblock.vemacs.Shortify.common.ShortifyException;
 import com.nullblock.vemacs.Shortify.util.ShortifyUtility;
@@ -26,29 +26,57 @@ public class ShortifyLegacyListener implements Listener {
 		plugin = Shortify;
 	}
 
-	/* This class is only used when we are working with 1.1, 1.2 or very early 1.3. */
+	/*
+	 * This class is only used when we are working with 1.1, 1.2 or very early
+	 * 1.3.
+	 */
 	@EventHandler(priority = EventPriority.LOW)
-	public void playerChat(PlayerChatEvent e) {
-		Shortener shortener = ShortifyUtility.getShortener(plugin.getCfg());
+	public void playerChat(final PlayerChatEvent e) {
+		final Shortener shortener = ShortifyUtility.getShortener(Globals.c);
 		if (e.getPlayer().hasPermission("shortify.shorten")) {
 			try {
-				if (plugin.getCfg().getString("mode", "replace")
+				if (Globals.c.getString("mode", "replace")
 						.equals("replace")) {
 					e.setMessage(ShortifyUtility.shortenAll(
 							e.getMessage(),
-							Integer.valueOf(plugin.getCfg().getString(
+							Integer.valueOf(Globals.c.getString(
 									"minlength")), shortener, ""));
-				} else if (plugin.getCfg().getString("mode", "replace")
+				} else if (Globals.c.getString("mode", "replace")
 						.equals("classic")) {
-					new ShortifyClassicThread(plugin.getCfg(), plugin.getServer(), e.getMessage()).run();
+					plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
+						@Override
+						public void run() {
+							try {
+								final String newm = ShortifyUtility.classicUrlShorten(
+									e.getMessage(), Integer.valueOf(Globals.c.getString("minlength", "20")),
+									shortener);
+								plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+
+									@Override
+									public void run() {
+										plugin.getServer().broadcastMessage(newm);
+									}
+									
+								});
+							} catch (NumberFormatException e) {
+								plugin.getServer().getConsoleSender()
+										.sendMessage(
+												ChatColor.RED
+														+ "Warning: Your config.yml is invalid: minlength is not a number or invalid.");
+							} catch (ShortifyException e) {
+								plugin.getServer().getConsoleSender().sendMessage(
+										ChatColor.RED + "Warning: " + e.getMessage());
+							}
+						}
+					});
 				}
 			} catch (NumberFormatException e1) {
-				Bukkit.getConsoleSender()
+				plugin.getServer().getConsoleSender()
 						.sendMessage(
 								ChatColor.RED
 										+ "Warning: Your config.yml is invalid: minlength is not a number or invalid.");
 			} catch (ShortifyException e1) {
-				Bukkit.getConsoleSender().sendMessage(
+				plugin.getServer().getConsoleSender().sendMessage(
 						ChatColor.RED + "Warning: " + e1.getMessage());
 			}
 		}

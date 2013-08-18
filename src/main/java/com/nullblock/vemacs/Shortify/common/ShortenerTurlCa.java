@@ -9,8 +9,8 @@ public class ShortenerTurlCa implements Shortener {
 	public String getShortenedUrl(String toshort) throws ShortifyException {
 		String inputLine = null;
 		try {
-			BufferedReader in = ShortifyUtility.getUrl("http://turl.ca/api.php?url="
-					+ toshort);
+			BufferedReader in = ShortifyUtility
+					.getUrl("http://turl.ca/api.php?url=" + toshort);
 			while ((inputLine = in.readLine()) != null) {
 				if (inputLine.startsWith("SUCCESS:")) {
 					return inputLine.replace("SUCCESS:", "http://turl.ca/");

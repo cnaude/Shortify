@@ -15,18 +15,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.nullblock.vemacs.Shortify.common.CommonConfiguration;
-import com.nullblock.vemacs.Shortify.common.Shortener;
-import com.nullblock.vemacs.Shortify.common.ShortenerBitLy;
-import com.nullblock.vemacs.Shortify.common.ShortenerGooGl;
-import com.nullblock.vemacs.Shortify.common.ShortenerIsGd;
-import com.nullblock.vemacs.Shortify.common.ShortenerNigGr;
-import com.nullblock.vemacs.Shortify.common.ShortenerPasteDebianNet;
-import com.nullblock.vemacs.Shortify.common.ShortenerTinyUrl;
-import com.nullblock.vemacs.Shortify.common.ShortenerTurlCa;
-import com.nullblock.vemacs.Shortify.common.ShortenerTx0;
-import com.nullblock.vemacs.Shortify.common.ShortenerYourls;
-import com.nullblock.vemacs.Shortify.common.ShortenerYu8Me;
+import com.nullblock.vemacs.Shortify.common.ShortenerManager;
 import com.nullblock.vemacs.Shortify.common.ShortifyException;
+import com.nullblock.vemacs.Shortify.util.ShortifyUtility;
 
 /**
  * @author tux-amd64
@@ -35,6 +26,7 @@ import com.nullblock.vemacs.Shortify.common.ShortifyException;
 public class UrlShortenerTest {
 
 	private CommonConfiguration c;
+	private ShortenerManager sm;
 
 	/**
 	 * @throws java.lang.Exception
@@ -70,6 +62,8 @@ public class UrlShortenerTest {
 			e.printStackTrace();
 			return;
 		}
+		sm = ShortifyUtility.setupShorteners();
+		sm = ShortifyUtility.reloadConfigShorteners(sm, c);
 	}
 
 	/**
@@ -79,81 +73,34 @@ public class UrlShortenerTest {
 	public void tearDown() throws Exception {
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void noConfigurationTest() throws InstantiationException,
 			IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException, SecurityException {
 		// For each URL shortener supported without special configuration,
 		// attempt to shorten the BukkitDev page.
-		System.out.println("---- No specially configured shorteners");
-		Class[] shorteners = { ShortenerIsGd.class, ShortenerTinyUrl.class,
-				ShortenerTurlCa.class, ShortenerTx0.class, ShortenerYu8Me.class, ShortenerNigGr.class };
+		String[] shorteners = sm.list();
 		for (int i = 0; i < shorteners.length; i++) {
 			// Attempt to shorten
-			doShortenerTest((Shortener) shorteners[i].getConstructor()
-					.newInstance());
+			doShortenerTest(shorteners[i]);
 		}
 	}
 
-	@Test
-	public void configuredUrlShorteners() {
-		System.out.println("---- Specially configured shorteners");
-		String bu = c.getString("bitlyUSER", "none");
-		String ba = c.getString("bitlyAPI", "none");
-		boolean bypass = false;
-		if (bu.equals("none")) {
-			System.out.println("No bit.ly user specified.");
-			bypass = true;
-		}
-		if (ba.equals("none")) {
-			System.out.println("No bit.ly API key specified.");
-			bypass = true;
-		}
-		if (!bypass) {
-			doShortenerTest(new ShortenerBitLy(bu, ba));
-		}
-		bypass = false;
-		String ga = c.getString("googAPI", "none");
-		if (ga.equals("none")) {
-			System.out.println("No goo.gl API key specified.");
-			bypass = true;
-		}
-		if (!bypass) {
-			doShortenerTest(new ShortenerGooGl(ga));
-		}
-		bypass = false;
-		String yur = c.getString("yourlsURI", "none");
-		String yu = c.getString("yourlsUSER", "none");
-		String yp = c.getString("yourlsPASS", "none");
-		if (yur.equals("none")) {
-			System.out.println("No YOURLS API URL specified.");
-			bypass = true;
-		}
-		if (yu.equals("none")) {
-			System.out.println("No YOURLS username specified.");
-			bypass = true;
-		}
-		if (yp.equals("none")) {
-			System.out.println("No YOURLS password specified.");
-			bypass = true;
-		}
-		if (!bypass) {
-			doShortenerTest(new ShortenerYourls(yur, yu, yp));
-		}
-	}
-
-	private void doShortenerTest(Shortener shortener) {
+	private void doShortenerTest(String s) {
 		try {
-			System.out
-					.println("Shortener "
-							+ shortener.getClass().getName()
+			System.out.println("Shortener "
+							+ s
 							+ ": "
-							+ shortener
-									.getShortenedUrl("http://dev.bukkit.org/server-mods/shortify/"));
+							+ sm.getShortener(s).
+								getShortenedUrl("http://dev.bukkit.org/server-mods/shortify/"));
 		} catch (ShortifyException e) {
-			fail("Shortener " + shortener.getClass().getName()
-					+ " returned an error: " + e.getMessage());
+			if (e.getMessage().startsWith("No API")) {
+				System.out.println("Shortener " + s + " is misconfigured: " + e.getMessage());
+				return;
+			}
+			fail("Shortener " + s
+					+ " (really " + sm.getShortener(s).getClass().getName() +
+					") returned an error: " + e.getMessage());
 		}
 	}
 

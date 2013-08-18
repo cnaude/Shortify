@@ -12,9 +12,12 @@ public class ShortenerBitLy implements Shortener {
 	}
 
 	public String getShortenedUrl(String toshort) throws ShortifyException {
-		return ShortifyUtility.getUrlSimple("http://api.bit.ly/v3/shorten?login=" + u
-				+ "&apiKey=" + a + "&longUrl=" + toshort + "&format=txt",
-				"bit.ly");
+		if (u.equals("none") || a.equals("none")) {
+			throw new ShortifyException("No API username/key");
+		}
+		return ShortifyUtility.getUrlSimple(
+				"http://api.bit.ly/v3/shorten?login=" + u + "&apiKey=" + a
+						+ "&longUrl=" + toshort + "&format=txt", "bit.ly");
 	}
 
 }

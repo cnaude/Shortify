@@ -19,10 +19,14 @@ public class ShortenerYourls implements Shortener {
 
 	@Override
 	public String getShortenedUrl(String toshort) throws ShortifyException {
+		if (yourls_apiuri.equals("none")|| yourls_apiuser.equals("none")|| yourls_apipass.equals("none")) {
+			throw new ShortifyException("No API username/key");
+		}
 		try {
-			BufferedReader in = ShortifyUtility.getUrl(yourls_apiuri + "?username="
-					+ yourls_apiuser + "&password=" + yourls_apipass
-					+ "&action=shorturl&url=" + toshort + "&format=simple");
+			BufferedReader in = ShortifyUtility.getUrl(yourls_apiuri
+					+ "?username=" + yourls_apiuser + "&password="
+					+ yourls_apipass + "&action=shorturl&url=" + toshort
+					+ "&format=simple");
 			String inputLine;
 			// YOURLS may output an XML document instead of an URL.
 			while ((inputLine = in.readLine()) != null) {

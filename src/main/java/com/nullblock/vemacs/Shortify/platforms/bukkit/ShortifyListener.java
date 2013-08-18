@@ -6,7 +6,6 @@ package com.nullblock.vemacs.Shortify.platforms.bukkit;
  * 
  */
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -14,6 +13,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+import com.nullblock.vemacs.Shortify.common.Globals;
+import com.nullblock.vemacs.Shortify.common.Shortener;
 import com.nullblock.vemacs.Shortify.common.ShortifyException;
 import com.nullblock.vemacs.Shortify.util.ShortifyUtility;
 
@@ -26,48 +27,75 @@ public class ShortifyListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.LOW)
-	public void playerChat(AsyncPlayerChatEvent e) {
+	public void playerChat(final AsyncPlayerChatEvent e) {
+		final Shortener shortener = ShortifyUtility.getShortener(Globals.c);
 		if (e.getPlayer().hasPermission("shortify.shorten")) {
 			try {
-				if (plugin.getCfg().getString("mode", "replace")
+				if (Globals.c.getString("mode", "replace")
 						.equals("replace")) {
 					e.setMessage(ShortifyUtility.shortenAll(
 							e.getMessage(),
-							Integer.valueOf(plugin.getCfg().getString(
-									"minlength")), ShortifyUtility.getShortener(plugin.getCfg()), plugin.getCfg().getString(
-									"prefix")));
-				} else if (plugin.getCfg().getString("mode", "replace")
+							Integer.valueOf(Globals.c.getString(
+									"minlength", "20")),
+									shortener,
+							Globals.c.getString("prefix")));
+				} else if (Globals.c.getString("mode", "replace")
 						.equals("classic")) {
-					new ShortifyClassicThread(plugin.getCfg(), plugin.getServer(), e.getMessage()).run();
+					plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+						@Override
+						public void run() {
+							try {
+								final String newm = ShortifyUtility.classicUrlShorten(
+									e.getMessage(), Integer.valueOf(Globals.c.getString("minlength", "20")),
+									shortener);
+								plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+
+									@Override
+									public void run() {
+										plugin.getServer().broadcastMessage(newm);
+									}
+									
+								});
+							} catch (NumberFormatException e) {
+								plugin.getServer().getConsoleSender()
+										.sendMessage(
+												ChatColor.RED
+														+ "Warning: Your config.yml is invalid: minlength is not a number or invalid.");
+							} catch (ShortifyException e) {
+								plugin.getServer().getConsoleSender().sendMessage(
+										ChatColor.RED + "Warning: " + e.getMessage());
+							}
+						}
+					});
 				}
 			} catch (NumberFormatException e1) {
-				Bukkit.getConsoleSender()
+				plugin.getServer().getConsoleSender()
 						.sendMessage(
 								ChatColor.RED
 										+ "Warning: Your config.yml is invalid: minlength is not a number or invalid.");
 			} catch (ShortifyException e1) {
-				Bukkit.getConsoleSender().sendMessage(
+				plugin.getServer().getConsoleSender().sendMessage(
 						ChatColor.RED + "Warning: " + e1.getMessage());
 			}
 		}
 	}
+
 	@EventHandler(priority = EventPriority.LOW)
 	public void playerCommand(PlayerCommandPreprocessEvent e) {
-				if (e.getPlayer().hasPermission("shortify.shorten.cmd")) {
+		if (e.getPlayer().hasPermission("shortify.shorten.cmd")) {
 			try {
-
-					e.setMessage( ShortifyUtility.shortenAll(
-							e.getMessage(),
-							Integer.valueOf(plugin.getCfg().getString(
-									"minlength")), ShortifyUtility.getShortener(plugin.getCfg()), ""));
+				e.setMessage(ShortifyUtility.shortenAll(
+						e.getMessage(),
+						Integer.valueOf(Globals.c.getString("minlength", "20")),
+						ShortifyUtility.getShortener(Globals.c), ""));
 
 			} catch (NumberFormatException e1) {
-				Bukkit.getConsoleSender()
+				plugin.getServer().getConsoleSender()
 						.sendMessage(
 								ChatColor.RED
 										+ "Warning: Your config.yml is invalid: minlength is not a number or invalid.");
 			} catch (ShortifyException e1) {
-				Bukkit.getConsoleSender().sendMessage(
+				plugin.getServer().getConsoleSender().sendMessage(
 						ChatColor.RED + "Warning: " + e1.getMessage());
 			}
 		}

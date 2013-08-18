@@ -109,9 +109,10 @@ public class CommonConfiguration {
 	}
 
 	public Boolean getBoolean(Object node, Boolean valIfNotFound) {
-		return Boolean.parseBoolean(getString(node, String.valueOf(valIfNotFound)));
+		return Boolean.parseBoolean(getString(node,
+				String.valueOf(valIfNotFound)));
 	}
-	
+
 	public boolean contains(Object node) {
 		return configuration.containsKey(node);
 	}
@@ -122,7 +123,7 @@ public class CommonConfiguration {
 		s.putAll(configuration);
 		return s;
 	}
-	
+
 	public void mergeDefaults() {
 		configuration = mergeDefaultsAndConfig();
 	}
