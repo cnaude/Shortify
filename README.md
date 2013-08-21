@@ -28,7 +28,8 @@ Authors
 For Developers
 -------
 
-If you would like to implement a URL shortener, you should create your own class and implement the `Shortener` interface, add a value for your class in `getShortener()`, and add a value in the test class.
+If you would like to implement a URL shortener, you should create your own class and implement the `Shortener` interface, in `ShortifyUtility.java`, add a value for your class in `setupShorteners()`,
+then, if needed, add config loading in `reloadConfigShorteners()`. Finally add a value in the test class.
 
 If the service is not working ingame, but passes the tests, try decoding the URL before passing it on. This usually fixes the issue for special shorteners.
 
