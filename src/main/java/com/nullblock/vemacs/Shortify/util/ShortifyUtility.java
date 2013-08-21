@@ -46,7 +46,7 @@ public class ShortifyUtility {
 				c.getString("bitlyUSER"), c.getString("bitlyAPI")));
 		sm.unregisterShortener("yourls");
 		sm.registerShortener("yourls", new ShortenerYourls(
-				c.getString("yourlsUSER"), c.getString("yourlsURI"),
+				c.getString("yourlsURI"), c.getString("yourlsUSER"),
 				c.getString("yourlsPASS")));
 		sm.unregisterShortener("googl");
 		sm.registerShortener("googl", new ShortenerGooGl(
