@@ -28,7 +28,7 @@ public class ShortenerTx0 implements Shortener {
 				s += line;
 			}
 			return s.split("CCC>")[1].split("</td>")[0];
-		} catch (MalformedURLException ex) {
+		} catch (MalformedURLException ignored) {
 		} catch (IOException ex) {
 			throw new ShortifyException("Unable to shorten via tx0.org: "
 					+ ex.getMessage());

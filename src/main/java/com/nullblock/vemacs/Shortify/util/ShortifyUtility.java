@@ -1,32 +1,13 @@
 package com.nullblock.vemacs.Shortify.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import com.nullblock.vemacs.Shortify.common.*;
+import org.mcstats.Metrics;
+
+import java.io.*;
 import java.net.URL;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.mcstats.Metrics;
-
-import com.nullblock.vemacs.Shortify.common.CommonConfiguration;
-import com.nullblock.vemacs.Shortify.common.Globals;
-import com.nullblock.vemacs.Shortify.common.Shortener;
-import com.nullblock.vemacs.Shortify.common.ShortenerBitLy;
-import com.nullblock.vemacs.Shortify.common.ShortenerGooGl;
-import com.nullblock.vemacs.Shortify.common.ShortenerIsGd;
-import com.nullblock.vemacs.Shortify.common.ShortenerManager;
-import com.nullblock.vemacs.Shortify.common.ShortenerNigGr;
-import com.nullblock.vemacs.Shortify.common.ShortenerSafeMn;
-import com.nullblock.vemacs.Shortify.common.ShortenerTinyUrl;
-import com.nullblock.vemacs.Shortify.common.ShortenerTurlCa;
-import com.nullblock.vemacs.Shortify.common.ShortenerTx0;
-import com.nullblock.vemacs.Shortify.common.ShortenerYourls;
-import com.nullblock.vemacs.Shortify.common.ShortenerYu8Me;
-import com.nullblock.vemacs.Shortify.common.ShortifyException;
 
 public class ShortifyUtility {
 	public static ShortenerManager setupShorteners() {
@@ -74,7 +55,7 @@ public class ShortifyUtility {
 
 	public static String getUrlSimple(String uri, String srv)
 			throws ShortifyException {
-		String inputLine = null;
+		String inputLine;
 		try {
 			BufferedReader in = getUrl(uri);
 			String s = "";
@@ -101,7 +82,7 @@ public class ShortifyUtility {
 				.compile("(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?������]))");
 		Matcher m = p.matcher(txt);
 		StringBuffer sb = new StringBuffer();
-		String urlTmp = "";
+		String urlTmp;
 		while (m.find()) {
 			urlTmp = m.group(1);
 			if (urlTmp.length() >= minln) {
@@ -144,7 +125,7 @@ public class ShortifyUtility {
 		Pattern p = Pattern
 				.compile("(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]))");
 		Matcher m = p.matcher(message);
-		String urlTmp = "";
+		String urlTmp;
 		String output = "The following URLs were shortened: ";
 		while (m.find()) {
 			urlTmp = m.group(1);
@@ -243,7 +224,7 @@ public class ShortifyUtility {
 				c.mergeDefaults();
 				c.dumpYaml(cfg);
 			}
-		} catch (IOException e) {
+		} catch (IOException ignored) {
 		}
 		return c;
 	}

@@ -1,6 +1,7 @@
 package com.nullblock.vemacs.Shortify.common;
 
 import java.util.HashMap;
+import java.util.Set;
 
 public class ShortenerManager {
 	private HashMap<String, Shortener> shorteners = new HashMap<String, Shortener>();
@@ -36,6 +37,7 @@ public class ShortenerManager {
 	}
 	
 	public String[] list() {
-		return shorteners.keySet().toArray(new String[]{});
+        Set<String> set = shorteners.keySet();
+        return set.toArray(new String[set.size()]);
 	}
 }

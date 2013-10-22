@@ -47,7 +47,7 @@ public class ShortenerGooGl implements Shortener {
 			String line;
 
 			while ((line = rd.readLine()) != null) {
-				if (line.indexOf("id") > -1) {
+				if (line.contains("id")) {
 					shortUrl = line.substring(8, line.length() - 2);
 					break;
 				}
