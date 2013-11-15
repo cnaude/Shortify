@@ -14,6 +14,6 @@ public class ShortenerNigGr implements Shortener {
 		}
 		return "http://nig.gr/"
 				+ ShortifyUtility.getUrlSimple("http://nig.gr/src/web/api/"
-						+ toshort, "nig.gr");
+						+ toshort);
 	}
 }

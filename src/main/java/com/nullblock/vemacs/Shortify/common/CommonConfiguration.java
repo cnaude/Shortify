@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import com.google.common.collect.ImmutableMap;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
@@ -23,21 +24,21 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;
  * 
  */
 public class CommonConfiguration {
-	private Map<Object, Object> configuration = new HashMap<Object, Object>();
-	private Map<Object, Object> defaults = new HashMap<Object, Object>();
+	private Map<Object, Object> configuration = new HashMap<>();
+	private Map<Object, Object> defaults = new HashMap<>();
 
 	public CommonConfiguration() {
 	}
 
 	public CommonConfiguration(Map<Object, Object> map) {
-		configuration = map;
+		configuration = new HashMap<>(map);
 	}
 
-	public CommonConfiguration(Reader f) throws FileNotFoundException {
+	public CommonConfiguration(Reader f) {
 		loadYaml(f);
 	}
 
-	public CommonConfiguration(File f) throws FileNotFoundException {
+	public CommonConfiguration(File f) throws IOException {
 		loadYaml(f);
 	}
 
@@ -50,29 +51,32 @@ public class CommonConfiguration {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void loadYaml(File f) throws FileNotFoundException {
-		Object tmp = new Yaml(new SafeConstructor())
-				.load(new FileInputStream(f));
-		if (tmp instanceof Map<?, ?>) {
+	public void loadYaml(File f) throws IOException {
+        Object tmp;
+        try (FileInputStream fis = new FileInputStream(f)) {
+		    tmp = new Yaml(new SafeConstructor()).load(fis);
+        }
+        if (tmp instanceof Map<?, ?>) {
 			configuration = (Map<Object, Object>) tmp;
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public void loadYaml(Reader f) throws FileNotFoundException {
+	public void loadYaml(Reader f) {
 		Object tmp = new Yaml(new SafeConstructor()).load(f);
 		if (tmp instanceof Map<?, ?>) {
 			configuration = (Map<Object, Object>) tmp;
 		}
 	}
 
-	public void loadProperties(File f) throws FileNotFoundException,
-			IOException {
+	public void loadProperties(File f) throws
+            IOException {
 		Properties p = new Properties();
-		p.load(new FileInputStream(f));
+        try (FileInputStream fis = new FileInputStream(f)) {
+		    p.load(fis);
+        }
 		for (Map.Entry<?, ?> entry : p.entrySet()) {
-			configuration.put(String.valueOf(entry.getKey()),
-					String.valueOf(entry.getValue()));
+			configuration.put(entry.getKey(), entry.getValue());
 		}
 	}
 
@@ -92,7 +96,6 @@ public class CommonConfiguration {
 	}
 
 	public void set(Object node, Object val) {
-		configuration.remove(node);
 		configuration.put(node, val);
 	}
 
@@ -118,7 +121,7 @@ public class CommonConfiguration {
 	}
 
 	private Map<Object, Object> mergeDefaultsAndConfig() {
-		HashMap<Object, Object> s = new HashMap<Object, Object>();
+		Map<Object, Object> s = new HashMap<>();
 		s.putAll(defaults);
 		s.putAll(configuration);
 		return s;
@@ -129,31 +132,33 @@ public class CommonConfiguration {
 	}
 
 	public void dumpYaml(File f) throws IOException {
-		BufferedWriter s = new BufferedWriter(new FileWriter(f));
-		DumperOptions options = new DumperOptions();
-		options.setIndent(4);
-		options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-		try {
-			new Yaml(options).dump(mergeDefaultsAndConfig(), s);
-		} finally {
-			s.flush();
-			s.close();
-		}
+		try (BufferedWriter s = new BufferedWriter(new FileWriter(f))) {
+		    DumperOptions options = new DumperOptions();
+		    options.setIndent(4);
+		    options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+		    try {
+			    new Yaml(options).dump(mergeDefaultsAndConfig(), s);
+		    } finally {
+			    s.flush();
+			    s.close();
+		    }
+        }
 	}
 
-	public void dumpProperties(File f) throws FileNotFoundException,
-			IOException {
+	public void dumpProperties(File f) throws IOException {
 		Properties p = new Properties();
 		p.putAll(mergeDefaultsAndConfig());
-		p.store(new FileOutputStream(f), "");
+        try (FileOutputStream fos = new FileOutputStream(f)) {
+		    p.store(fos, "");
+        }
 	}
 
 	public Map<?, ?> getConfigurationMap() {
-		return configuration;
+		return ImmutableMap.copyOf(configuration);
 	}
 
 	@SuppressWarnings("unchecked")
 	public void setConfigurationMap(Map<?, ?> cfg) {
-		configuration = (Map<Object, Object>) cfg;
+		configuration = new HashMap<>(cfg);
 	}
 }

@@ -7,7 +7,7 @@ public class ShortenerYu8Me implements Shortener {
 	@Override
 	public String getShortenedUrl(String toshort) throws ShortifyException {
 		return ShortifyUtility.getUrlSimple(
-				"http://yu8.me/shorten.php?longurl=" + toshort, "yu8.me");
+				"http://yu8.me/shorten.php?longurl=" + toshort);
 	}
 
 }

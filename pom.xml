@@ -10,8 +10,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>2.3.2</version>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>1.7</source>
+          <target>1.7</target>
         </configuration>
       </plugin>
       <plugin>
@@ -32,14 +32,9 @@
             <configuration>
               <minimizeJar>true</minimizeJar>
               <artifactSet>
-                <excludes>
-                  <exclude>junit:junit</exclude>
-                  <exclude>org.bukkit:bukkit</exclude>
-                  <exclude>net*:*</exclude>
-                  <exclude>com*:*</exclude>
-                  <exclude>de*:*</exclude>
-                  <exclude>rhino*:*</exclude>
-                </excludes>
+                <includes>
+                  <include>org.mcstats.bukkit:metrics</include>
+                </includes>
               </artifactSet>
               <!-- To keep compatibility with Spout/(old?) Bukkit-->
               <relocations>

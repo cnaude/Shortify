@@ -1,4 +1,4 @@
-package com.nullblock.vemacs.Shortify.platforms.bukkit;
+package com.nullblock.vemacs.Shortify.bukkit;
 
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;

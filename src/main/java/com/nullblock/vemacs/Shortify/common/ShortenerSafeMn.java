@@ -6,6 +6,6 @@ public class ShortenerSafeMn implements Shortener {
 	public String getShortenedUrl(String toshort) throws ShortifyException {
 		String url = "http://safe.mn/api/shorten?url=%s&format=%s";
 		url = String.format(url, toshort, "text");
-		return ShortifyUtility.getUrlSimple(url, "safe.mn");
+		return ShortifyUtility.getUrlSimple(url).trim();
 	}
 }

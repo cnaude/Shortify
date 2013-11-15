@@ -63,7 +63,7 @@ public class UrlShortenerTest {
 			return;
 		}
 		sm = ShortifyUtility.setupShorteners();
-		sm = ShortifyUtility.reloadConfigShorteners(sm, c);
+		ShortifyUtility.reloadConfigShorteners(sm, c);
 	}
 
 	/**

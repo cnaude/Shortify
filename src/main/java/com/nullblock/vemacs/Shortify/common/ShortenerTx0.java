@@ -1,9 +1,8 @@
 package com.nullblock.vemacs.Shortify.common;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import com.google.common.io.ByteStreams;
+
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -15,18 +14,18 @@ public class ShortenerTx0 implements Shortener {
 		try {
 			URLConnection conn = new URL("http://tx0.org").openConnection();
 			conn.setDoOutput(true);
-			OutputStreamWriter wr = new OutputStreamWriter(
-					conn.getOutputStream());
-			wr.write("url=" + toshort);
-			wr.flush();
+            try (OutputStreamWriter wr = new OutputStreamWriter(
+                    conn.getOutputStream())) {
+                wr.write("url=" + toshort);
+                wr.flush();
+            }
 
-			BufferedReader rd = new BufferedReader(new InputStreamReader(
-					conn.getInputStream()));
-			String line = null;
-			String s = "";
-			while ((line = rd.readLine()) != null) {
-				s += line;
-			}
+            String s;
+			try (InputStream is = conn.getInputStream();
+                 ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+                ByteStreams.copy(is, out);
+                s = new String(out.toByteArray());
+            }
 			return s.split("CCC>")[1].split("</td>")[0];
 		} catch (MalformedURLException ignored) {
 		} catch (IOException ex) {

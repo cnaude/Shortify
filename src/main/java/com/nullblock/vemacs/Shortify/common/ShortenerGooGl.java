@@ -37,24 +37,23 @@ public class ShortenerGooGl implements Shortener {
 			URLConnection conn = new URL(googUrl).openConnection();
 			conn.setDoOutput(true);
 			conn.setRequestProperty("Content-Type", "application/json");
-			OutputStreamWriter wr = new OutputStreamWriter(
-					conn.getOutputStream());
-			wr.write("{\"longUrl\":\"" + longUrl + "\"}");
-			wr.flush();
+			try (OutputStreamWriter wr = new OutputStreamWriter(
+					conn.getOutputStream())) {
+			    wr.write("{\"longUrl\":\"" + longUrl + "\"}");
+			    wr.flush();
+            }
 
-			BufferedReader rd = new BufferedReader(new InputStreamReader(
-					conn.getInputStream()));
-			String line;
+			try (BufferedReader rd = new BufferedReader(new InputStreamReader(
+					conn.getInputStream()))) {
+			    String line;
 
-			while ((line = rd.readLine()) != null) {
-				if (line.contains("id")) {
-					shortUrl = line.substring(8, line.length() - 2);
-					break;
-				}
-			}
-
-			wr.close();
-			rd.close();
+			    while ((line = rd.readLine()) != null) {
+				    if (line.contains("id")) {
+					    shortUrl = line.substring(8, line.length() - 2);
+					    break;
+				    }
+			    }
+            }
 		} catch (MalformedURLException ex) {
 			shortUrl = longUrl;
 		} catch (IOException ex) {

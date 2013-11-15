@@ -4,7 +4,7 @@
  * This class provides the means to safetly and easily update a plugin, or check to see if it is updated using dev.bukkit.org
  */
 
-package com.nullblock.vemacs.Shortify.platforms.bukkit;
+package com.nullblock.vemacs.Shortify.bukkit;
 
 import java.io.*;
 import java.lang.Runnable;
@@ -47,7 +47,6 @@ public class Updater
     private long totalSize; // Holds the total size of the file
     //private double downloadedSize; TODO: Holds the number of bytes downloaded
     private int sizeLine; // Used for detecting file size
-    private int multiplier; // Used for determining when to broadcast download updates
     private boolean announce; // Whether to announce file downloads
     private URL url; // Connecting to RSS
     private File file; // The plugin's file
@@ -261,7 +260,7 @@ public class Updater
                     fout.close();
                 }
             }
-            catch (Exception ex)
+            catch (Exception ignored)
             {
             }
         }
@@ -408,9 +407,9 @@ public class Updater
                 else if(counter == sizeLine)
                 {
                     String size = line.replaceAll("<dd>", "").replaceAll("</dd>", "");
-                    multiplier = size.contains("MiB") ? 1048576 : 1024;
+                    int multiplier = size.contains("MiB") ? 1048576 : 1024;
                     size = size.replace(" KiB", "").replace(" MiB", "");
-                    totalSize = (long)(Double.parseDouble(size)*multiplier);
+                    totalSize = (long)(Double.parseDouble(size)* multiplier);
                 }
             }
             urlConn = null;
@@ -536,7 +535,6 @@ public class Updater
                         {
                             event = eventReader.nextEvent();
                             link = event.asCharacters().getData();
-                            continue;
                         }
                     }
                     else if (event.isEndElement())

@@ -7,50 +7,40 @@ import com.nullblock.vemacs.Shortify.util.ShortifyUtility;
 
 public class ShortenerYourls implements Shortener {
 
-	private String yourls_apiuri;
-	private String yourls_apiuser;
-	private String yourls_apipass;
+	private String apiUrl;
+	private String apiUser;
+	private String apiPass;
 
 	public ShortenerYourls(String uri, String u, String p) {
-		yourls_apiuri = uri;
-		yourls_apiuser = u;
-		yourls_apipass = p;
+		apiUrl = uri;
+		apiUser = u;
+		apiPass = p;
 	}
 
 	@Override
 	public String getShortenedUrl(String toshort) throws ShortifyException {
-		if (yourls_apiuri.equals("none")|| yourls_apiuser.equals("none")|| yourls_apipass.equals("none")) {
+		if (apiUrl.equals("none")|| apiUser.equals("none")|| apiPass.equals("none")) {
 			throw new ShortifyException("No API username/key");
 		}
-		try {
-			BufferedReader in = ShortifyUtility.getUrl(yourls_apiuri
-					+ "?username=" + yourls_apiuser + "&password="
-					+ yourls_apipass + "&action=shorturl&url=" + toshort
-					+ "&format=simple");
-			String inputLine;
-			// YOURLS may output an XML document instead of an URL.
-			while ((inputLine = in.readLine()) != null) {
-				if (inputLine.startsWith("<?xml")) {
-					// API error, handle as needed
-					if (inputLine.contains("already exists")) {
-						return inputLine.split("<shorturl>")[1]
-								.split("</shorturl>")[0];
-					} else {
-						throw new ShortifyException("YOURLS API error: "
-								+ inputLine);
-					}
-				}
-				if (inputLine.startsWith("http://")) {
-					return inputLine;
-				}
-				throw new ShortifyException("YOURLS API error: " + inputLine);
-			}
-		} catch (IOException ex) {
-			throw new ShortifyException(
-					"Unable to shorten via YOURLS (host down?): "
-							+ ex.getMessage());
-		}
-		return null;
+        String output = ShortifyUtility.getUrlSimple(apiUrl
+                + "?username=" + apiUser + "&password="
+                + apiPass + "&action=shorturl&url=" + toshort
+                + "&format=simple");
+        // YOURLS may output an XML document instead of an URL.
+        if (output.startsWith("<?xml")) {
+            // API error, handle as needed
+            if (output.contains("already exists")) {
+                return output.split("<shorturl>")[1]
+                        .split("</shorturl>")[0];
+            } else {
+                throw new ShortifyException("YOURLS API error: "
+                        + output);
+            }
+        }
+        if (output.startsWith("http://")) {
+            return output.trim();
+        }
+        throw new ShortifyException("YOURLS API error: " + output);
 	}
 
 }

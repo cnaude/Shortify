@@ -1,4 +1,4 @@
-package com.nullblock.vemacs.Shortify.platforms.bukkit;
+package com.nullblock.vemacs.Shortify.bukkit;
 
 /**
  * Listener for Shortify, legacy Bukkit

@@ -1,9 +1,12 @@
 package com.nullblock.vemacs.Shortify.util;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import com.nullblock.vemacs.Shortify.common.*;
 import org.mcstats.Metrics;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -21,7 +24,7 @@ public class ShortifyUtility {
 		sm.registerShortener("yu8me", new ShortenerYu8Me());
 		return sm;
 	}
-	public static ShortenerManager reloadConfigShorteners(ShortenerManager sm, CommonConfiguration c) {
+	public static void reloadConfigShorteners(ShortenerManager sm, CommonConfiguration c) {
 		sm.unregisterShortener("bitly");
 		sm.registerShortener("bitly", new ShortenerBitLy(
 				c.getString("bitlyUSER"), c.getString("bitlyAPI")));
@@ -32,10 +35,8 @@ public class ShortifyUtility {
 		sm.unregisterShortener("googl");
 		sm.registerShortener("googl", new ShortenerGooGl(
 				c.getString("googAPI")));
-		return sm;
 	}
-	public static void setupMetrics(Metrics metrics, CommonConfiguration cc)
-			throws IOException {
+	public static void setupMetrics(Metrics metrics, CommonConfiguration cc) {
 		// Cause I won't live and die
 		// For the part with a dirty CD-i
 		Metrics.Graph g = metrics.createGraph("URL Shortener");
@@ -48,23 +49,14 @@ public class ShortifyUtility {
 		metrics.start();
 	}
 
-	public static BufferedReader getUrl(String toread) throws IOException {
-		return new BufferedReader(new InputStreamReader(
-				new URL(toread).openStream()));
-	}
-
-	public static String getUrlSimple(String uri, String srv)
+	public static String getUrlSimple(String uri)
 			throws ShortifyException {
-		String inputLine;
-		try {
-			BufferedReader in = getUrl(uri);
-			String s = "";
-			while ((inputLine = in.readLine()) != null)
-				s += inputLine;
-			in.close();
-			return s;
+		try (InputStream is = new URL(uri).openStream();
+             ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            ByteStreams.copy(is, out);
+            return new String(out.toByteArray());
 		} catch (IOException ex) {
-			throw new ShortifyException("Unable to shorten via " + srv + ": "
+			throw new ShortifyException("Unable to shorten: "
 					+ ex.getMessage());
 		}
 	}
@@ -224,7 +216,7 @@ public class ShortifyUtility {
 				c.mergeDefaults();
 				c.dumpYaml(cfg);
 			}
-		} catch (IOException ignored) {
+        } catch (IOException ignored) {
 		}
 		return c;
 	}

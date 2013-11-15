@@ -1,4 +1,4 @@
-package com.nullblock.vemacs.Shortify.platforms.bukkit;
+package com.nullblock.vemacs.Shortify.bukkit;
 
 import java.io.IOException;
 
@@ -24,7 +24,7 @@ public final class Shortify extends JavaPlugin {
 			new Updater(this, "slug", this.getFile(), Updater.UpdateType.DEFAULT, false);
 		}
 		Globals.sm = ShortifyUtility.setupShorteners();
-		Globals.sm = ShortifyUtility.reloadConfigShorteners(Globals.sm, Globals.c);
+		ShortifyUtility.reloadConfigShorteners(Globals.sm, Globals.c);
 		ShortifyUtility.verifyConfiguration(Globals.c, getLogger());
 		if (Globals.c.getBoolean("metrics")) {
 			try {
@@ -68,7 +68,7 @@ public final class Shortify extends JavaPlugin {
 			if (args[0].equals("reload")) {
 				Globals.c = ShortifyUtility.loadCfg(getFile());
 				ShortifyUtility.verifyConfiguration(Globals.c, getLogger());
-				Globals.sm = ShortifyUtility.reloadConfigShorteners(Globals.sm, Globals.c);
+				ShortifyUtility.reloadConfigShorteners(Globals.sm, Globals.c);
 				sender.sendMessage(ChatColor.GREEN
 						+ "Shortify has been reloaded.");
 			} else {
