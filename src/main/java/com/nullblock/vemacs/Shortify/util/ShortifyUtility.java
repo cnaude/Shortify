@@ -1,11 +1,14 @@
 package com.nullblock.vemacs.Shortify.util;
 
+import com.google.common.base.Joiner;
 import com.google.common.io.ByteStreams;
 import com.nullblock.vemacs.Shortify.common.*;
 import org.mcstats.Metrics;
 
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -118,14 +121,13 @@ public class ShortifyUtility {
                 .compile("(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]))");
         Matcher m = p.matcher(message);
         String urlTmp;
-        String output = "The following URLs were shortened: ";
+        List<String> urls = new ArrayList<>();
         while (m.find()) {
             urlTmp = m.group(1);
             if (urlTmp.length() > minln) {
                 try {
-                    output = output
-                            + shortener.getShortenedUrl(java.net.URLEncoder
-                            .encode(urlTmp, "UTF-8")) + " ,";
+                    urls.add(shortener.getShortenedUrl(java.net.URLEncoder
+                            .encode(urlTmp, "UTF-8")));
                     // might as well put the encoder in the listener to
                     // prevent possible injections
                 } catch (UnsupportedEncodingException e1) {
@@ -133,7 +135,7 @@ public class ShortifyUtility {
                 }
             }
         }
-        return output.substring(0, output.length() - 3);
+        return "The following URLs were shortened: " + Joiner.on(", ").join(urls);
     }
 
     public static String replaceColors(String text) {
