@@ -1,5 +1,7 @@
 package com.nullblock.vemacs.Shortify.common;
 
+import org.json.simple.JSONObject;
+
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -35,7 +37,9 @@ public class ShortenerGooGl implements Shortener {
             conn.setRequestProperty("Content-Type", "application/json");
             try (OutputStreamWriter wr = new OutputStreamWriter(
                     conn.getOutputStream())) {
-                wr.write("{\"longUrl\":\"" + longUrl + "\"}");
+                JSONObject jo = new JSONObject();
+                jo.put("longUrl", longUrl);
+                wr.write(jo.toJSONString());
                 wr.flush();
             }
 

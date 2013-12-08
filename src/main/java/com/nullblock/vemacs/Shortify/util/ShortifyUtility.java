@@ -20,7 +20,6 @@ public class ShortifyUtility {
         sm.registerShortener("niggr", new ShortenerNigGr());
         sm.registerShortener("safemn", new ShortenerSafeMn());
         sm.registerShortener("tinyurl", new ShortenerTinyUrl());
-        sm.registerShortener("turlca", new ShortenerTurlCa());
         sm.registerShortener("tx0", new ShortenerTx0());
         sm.registerShortener("yu8me", new ShortenerYu8Me());
         return sm;
