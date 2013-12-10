@@ -5,7 +5,10 @@ import com.google.common.io.ByteStreams;
 import com.nullblock.vemacs.Shortify.common.*;
 import org.mcstats.Metrics;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,13 +56,10 @@ public class ShortifyUtility {
 
     public static String getUrlSimple(String uri)
             throws ShortifyException {
-        try (InputStream is = new URL(uri).openStream();
-             ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            ByteStreams.copy(is, out);
-            return new String(out.toByteArray());
+        try (InputStream is = new URL(uri).openStream()) {
+            return new String(ByteStreams.toByteArray(is));
         } catch (IOException ex) {
-            throw new ShortifyException("Unable to shorten: "
-                    + ex.getMessage());
+            throw new ShortifyException("Unable to fetch URL", ex);
         }
     }
 

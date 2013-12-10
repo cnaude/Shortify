@@ -12,27 +12,25 @@ package com.nullblock.vemacs.Shortify.common;
  * @since 1.3.0
  */
 
-public class ShortifyException extends Exception {
+public class ShortifyException extends RuntimeException {
 
-    private static final long serialVersionUID = 4584407356148298247L;
-    private String msg = "";
+    public ShortifyException() {
+        super();
+    }
 
-    /**
-     * Initialize the exception. A message is required.
-     *
-     * @param message a message to be shown by getMessage()
-     */
     public ShortifyException(String message) {
-        msg = message;
+        super(message);
     }
 
-    /**
-     * Return the message.
-     *
-     * @return the message
-     */
-    public String getMessage() {
-        return msg;
+    public ShortifyException(String message, Throwable cause) {
+        super(message, cause);
     }
 
+    public ShortifyException(Throwable cause) {
+        super(cause);
+    }
+
+    protected ShortifyException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
 }

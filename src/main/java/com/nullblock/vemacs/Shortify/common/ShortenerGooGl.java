@@ -1,8 +1,14 @@
 package com.nullblock.vemacs.Shortify.common;
 
+import com.google.common.io.ByteStreams;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -11,6 +17,7 @@ import java.net.URLDecoder;
 public class ShortenerGooGl implements Shortener {
 
     private String a = "";
+    private JSONParser jp = new JSONParser();
 
     public ShortenerGooGl(String apikey) {
         a = apikey;
@@ -43,22 +50,24 @@ public class ShortenerGooGl implements Shortener {
                 wr.flush();
             }
 
-            try (BufferedReader rd = new BufferedReader(new InputStreamReader(
-                    conn.getInputStream()))) {
-                String line;
-
-                while ((line = rd.readLine()) != null) {
-                    if (line.contains("id")) {
-                        shortUrl = line.substring(8, line.length() - 2);
-                        break;
-                    }
+            try (InputStream is = conn.getInputStream()) {
+                String json = new String(ByteStreams.toByteArray(is));
+                Object object = jp.parse(json);
+                if (object instanceof JSONObject) {
+                    JSONObject jo = (JSONObject) object;
+                    Object urlObj = jo.get("id");
+                    if (urlObj != null && urlObj instanceof String)
+                        shortUrl = (String)jo.get("id");
+                    else
+                        throw new ShortifyException("Unexpected JSON response from goo.gl!");
                 }
+            } catch (ParseException e) {
+                throw new ShortifyException("Unable to parse JSON", e);
             }
         } catch (MalformedURLException ex) {
             shortUrl = longUrl;
         } catch (IOException ex) {
-            throw new ShortifyException("Unable to shorten via goo.gl: "
-                    + ex.getMessage());
+            throw new ShortifyException("Unable to shorten via goo.gl", ex);
         }
         return shortUrl;
     }
