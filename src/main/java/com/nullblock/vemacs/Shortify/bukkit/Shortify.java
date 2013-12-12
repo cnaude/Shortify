@@ -20,7 +20,7 @@ public final class Shortify extends JavaPlugin {
         // Load config.yml with snakeyaml
         Globals.c = ShortifyUtility.loadCfg(getFile());
         if (Globals.c.getBoolean("update")) {
-            new Updater(this, "slug", this.getFile(), Updater.UpdateType.DEFAULT, false);
+            new Updater(this, 46984, this.getFile(), Updater.UpdateType.DEFAULT, false);
         }
         Globals.sm = ShortifyUtility.setupShorteners();
         ShortifyUtility.reloadConfigShorteners(Globals.sm, Globals.c);
