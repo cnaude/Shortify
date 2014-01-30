@@ -57,7 +57,7 @@ public class ShortenerGooGl implements Shortener {
                     JSONObject jo = (JSONObject) object;
                     Object urlObj = jo.get("id");
                     if (urlObj != null && urlObj instanceof String)
-                        shortUrl = (String)jo.get("id");
+                        shortUrl = (String) jo.get("id");
                     else
                         throw new ShortifyException("Unexpected JSON response from goo.gl!");
                 }
