@@ -1,6 +1,5 @@
 package com.nullblock.vemacs.Shortify.bukkit;
 
-import com.nullblock.vemacs.Shortify.common.Globals;
 import com.nullblock.vemacs.Shortify.common.ShortifyException;
 import com.nullblock.vemacs.Shortify.util.ShortifyUtility;
 import org.bukkit.ChatColor;
@@ -23,8 +22,8 @@ public class ShortifyCommandListener implements Listener {
             try {
                 e.setMessage(ShortifyUtility.shortenAll(
                         e.getMessage(),
-                        Integer.valueOf(Globals.c.getString("minlength", "20")),
-                        ShortifyUtility.getShortener(Globals.c), ""));
+                        Integer.valueOf(Shortify.getConfiguration().getString("minlength", "20")),
+                        ShortifyUtility.getShortener(Shortify.getConfiguration()), ""));
 
             } catch (NumberFormatException e1) {
                 plugin.getServer().getConsoleSender()

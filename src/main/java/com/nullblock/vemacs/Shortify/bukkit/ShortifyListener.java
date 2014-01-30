@@ -6,7 +6,6 @@ package com.nullblock.vemacs.Shortify.bukkit;
  *
  */
 
-import com.nullblock.vemacs.Shortify.common.Globals;
 import com.nullblock.vemacs.Shortify.common.Shortener;
 import com.nullblock.vemacs.Shortify.common.ShortifyException;
 import com.nullblock.vemacs.Shortify.util.ShortifyUtility;
@@ -26,25 +25,25 @@ public class ShortifyListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void playerChat(final AsyncPlayerChatEvent e) {
-        final Shortener shortener = ShortifyUtility.getShortener(Globals.c);
+        final Shortener shortener = ShortifyUtility.getShortener(Shortify.getConfiguration());
         if (e.getPlayer().hasPermission("shortify.shorten")) {
             try {
-                if (Globals.c.getString("mode", "replace")
+                if (Shortify.getConfiguration().getString("mode", "replace")
                         .equals("replace")) {
                     e.setMessage(ShortifyUtility.shortenAll(
                             e.getMessage(),
-                            Integer.valueOf(Globals.c.getString(
+                            Integer.valueOf(Shortify.getConfiguration().getString(
                                     "minlength", "20")),
                             shortener,
-                            Globals.c.getString("prefix")));
-                } else if (Globals.c.getString("mode", "replace")
+                            Shortify.getConfiguration().getString("prefix")));
+                } else if (Shortify.getConfiguration().getString("mode", "replace")
                         .equals("classic")) {
                     plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
                         @Override
                         public void run() {
                             try {
                                 final String newm = ShortifyUtility.classicUrlShorten(
-                                        e.getMessage(), Integer.valueOf(Globals.c.getString("minlength", "20")),
+                                        e.getMessage(), Integer.valueOf(Shortify.getConfiguration().getString("minlength", "20")),
                                         shortener);
                                 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 

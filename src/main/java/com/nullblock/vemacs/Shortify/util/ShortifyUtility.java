@@ -2,6 +2,7 @@ package com.nullblock.vemacs.Shortify.util;
 
 import com.google.common.base.Joiner;
 import com.google.common.io.ByteStreams;
+import com.nullblock.vemacs.Shortify.bukkit.Shortify;
 import com.nullblock.vemacs.Shortify.common.*;
 import org.mcstats.Metrics;
 
@@ -111,7 +112,7 @@ public class ShortifyUtility {
      *
      */
     public static Shortener getShortener(CommonConfiguration c) {
-        return Globals.sm.getShortener(c.getString("shortener"));
+        return Shortify.getShortenerManager().getShortener(c.getString("shortener"));
     }
 
     public static String classicUrlShorten(String message, Integer minln,
