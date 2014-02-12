@@ -3,21 +3,20 @@
  */
 package com.nullblock.vemacs.ShortifyTests;
 
-import static org.junit.Assert.fail;
+import com.nullblock.vemacs.Shortify.common.CommonConfiguration;
+import com.nullblock.vemacs.Shortify.common.ShortenerManager;
+import com.nullblock.vemacs.Shortify.common.ShortifyException;
+import com.nullblock.vemacs.Shortify.util.ShortifyUtility;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.nullblock.vemacs.Shortify.common.CommonConfiguration;
-import com.nullblock.vemacs.Shortify.common.ShortenerManager;
-import com.nullblock.vemacs.Shortify.common.ShortifyException;
-import com.nullblock.vemacs.Shortify.util.ShortifyUtility;
+import static org.junit.Assert.fail;
 
 /**
  * @author tux-amd64
@@ -80,10 +79,10 @@ public class UrlShortenerTest {
 		// For each URL shortener supported without special configuration,
 		// attempt to shorten the BukkitDev page.
 		String[] shorteners = sm.list();
-		for (int i = 0; i < shorteners.length; i++) {
-			// Attempt to shorten
-			doShortenerTest(shorteners[i]);
-		}
+        for (String shortener : shorteners) {
+            // Attempt to shorten
+            doShortenerTest(shortener);
+        }
 	}
 
 	private void doShortenerTest(String s) {
