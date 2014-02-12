@@ -36,16 +36,7 @@ public final class Shortify extends JavaPlugin {
                 getLogger().warning("Unable to set up Metrics.");
             }
         }
-        try {
-            Class.forName("org.bukkit.event.player.AsyncPlayerChatEvent");
-            listener = new ShortifyListener(this);
-            getLogger().info(
-                    "Detected CB 1.3.1 or above, using async chat event...");
-        } catch (ClassNotFoundException e) {
-            listener = new ShortifyLegacyListener(this);
-            getLogger()
-                    .info("Detected early CB 1.3 beta or below, using regular chat event...");
-        }
+        listener = new ShortifyListener(this);
         getServer().getPluginManager().registerEvents(listener, this);
         getServer().getPluginManager().registerEvents(new ShortifyCommandListener(this), this);
         ShortifyUtility.dumpData(getFile(), configuration);
