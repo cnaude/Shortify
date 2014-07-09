@@ -1,0 +1,7 @@
+name: Shortify
+author: vemacs
+main: com.nullblock.vemacs.shortify.bukkit.Shortify
+version: 1.7
+commands:
+  shortify:
+    description: Administrate Shortify.

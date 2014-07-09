@@ -1,0 +1,4 @@
+name: Shortify
+author: vemacs
+main: com.nullblock.vemacs.shortify.bungee.Shortify
+version: 1.7
