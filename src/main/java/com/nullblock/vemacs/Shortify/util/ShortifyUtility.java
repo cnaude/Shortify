@@ -18,6 +18,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ShortifyUtility {
+    private static final Pattern URL_PATTERN = Pattern
+            .compile("((mailto\\:|(news|(ht|f)tp(s?))\\://){1}\\S+)");
+
     public static ShortenerManager setupShorteners() {
         ShortenerManager sm = new ShortenerManager();
         sm.registerShortener("isgd", new ShortenerIsGd());
@@ -69,13 +72,13 @@ public class ShortifyUtility {
      *
      * @throws ShortifyException
      */
-    public static String shortenAll(String txt, Integer minln,
+    public static String shortenAll(String txt, int minln,
                                     Shortener shortener, String prefix) throws ShortifyException {
         // From Daring Fireball
         prefix = replaceColors(prefix);
-        Pattern p = Pattern
-                .compile("(?i)\\b((?:[a-z][\\w-]+:(?:/{1,3}|[a-z0-9%])|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?\u00AB\u00BB\u201C\u201D\u2018\u2019]))\n");
-        Matcher m = p.matcher(txt);
+        Matcher m = URL_PATTERN.matcher(txt);
+
+        // TODO Replace this with StringBuilder
         StringBuffer sb = new StringBuffer();
         String urlTmp;
         while (m.find()) {
@@ -115,11 +118,9 @@ public class ShortifyUtility {
         return Shortify.getShortenerManager().getShortener(c.getString("shortener"));
     }
 
-    public static String classicUrlShorten(String message, Integer minln,
+    public static String classicUrlShorten(String message, int minln,
                                            Shortener shortener) throws ShortifyException {
-        Pattern p = Pattern
-                .compile("(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]))");
-        Matcher m = p.matcher(message);
+        Matcher m = URL_PATTERN.matcher(message);
         String urlTmp;
         List<String> urls = new ArrayList<>();
         while (m.find()) {

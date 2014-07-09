@@ -17,7 +17,6 @@ import java.net.URLDecoder;
 public class ShortenerGooGl implements Shortener {
 
     private String a = "";
-    private JSONParser jp = new JSONParser();
 
     public ShortenerGooGl(String apikey) {
         a = apikey;
@@ -29,12 +28,16 @@ public class ShortenerGooGl implements Shortener {
         if (a.equals("none")) {
             throw new ShortifyException("No API key");
         }
+
+        JSONParser jp = new JSONParser();
         String shortUrl = "";
+
         try {
             toshort = URLDecoder.decode(toshort, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             // TODO Auto-generated catch block
         }
+
         String longUrl = toshort;
         String googUrl = "https://www.googleapis.com/urlshortener/v1/url?key="
                 + a;
