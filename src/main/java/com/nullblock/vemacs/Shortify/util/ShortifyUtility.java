@@ -4,7 +4,6 @@ import com.google.common.base.Joiner;
 import com.google.common.io.ByteStreams;
 import com.nullblock.vemacs.Shortify.bukkit.Shortify;
 import com.nullblock.vemacs.Shortify.common.*;
-import org.mcstats.Metrics;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ShortifyUtility {
+
     private static final Pattern URL_PATTERN = Pattern
             .compile("((mailto\\:|(news|(ht|f)tp(s?))\\://){1}\\S+)");
 
@@ -27,7 +27,7 @@ public class ShortifyUtility {
         sm.registerShortener("niggr", new ShortenerNigGr());
         sm.registerShortener("safemn", new ShortenerSafeMn());
         sm.registerShortener("tinyurl", new ShortenerTinyUrl());
-        sm.registerShortener("tx0", new ShortenerTx0());
+        //sm.registerShortener("tx0", new ShortenerTx0());
         sm.registerShortener("yu8me", new ShortenerYu8Me());
         return sm;
     }
@@ -45,19 +45,6 @@ public class ShortifyUtility {
                 c.getString("googAPI")));
     }
 
-    public static void setupMetrics(Metrics metrics, CommonConfiguration cc) {
-        // Cause I won't live and die
-        // For the part with a dirty CD-i
-        Metrics.Graph g = metrics.createGraph("URL Shortener");
-        g.addPlotter(new Metrics.Plotter(cc.getString("shortener", "isgd")) {
-            @Override
-            public int getValue() {
-                return 1;
-            }
-        });
-        metrics.start();
-    }
-
     public static String getUrlSimple(String uri)
             throws ShortifyException {
         try (InputStream is = new URL(uri).openStream()) {
@@ -70,10 +57,14 @@ public class ShortifyUtility {
     /**
      * Shorten all URLs in a String.
      *
+     * @param txt
+     * @param minln
+     * @param shortener
+     * @return
      * @throws ShortifyException
      */
     public static String shortenAll(String txt, int minln,
-                                    Shortener shortener, String prefix) throws ShortifyException {
+            Shortener shortener, String prefix) throws ShortifyException {
         // From Daring Fireball
         prefix = replaceColors(prefix);
         Matcher m = URL_PATTERN.matcher(txt);
@@ -88,7 +79,7 @@ public class ShortifyUtility {
                     if (!prefix.equals("")) {
                         urlTmp = prefix
                                 + shortener.getShortenedUrl(java.net.URLEncoder
-                                .encode(urlTmp, "UTF-8"))
+                                        .encode(urlTmp, "UTF-8"))
                                 + replaceColors("&r");
                     } else {
                         urlTmp = shortener.getShortenedUrl(java.net.URLEncoder
@@ -119,7 +110,7 @@ public class ShortifyUtility {
     }
 
     public static String classicUrlShorten(String message, int minln,
-                                           Shortener shortener) throws ShortifyException {
+            Shortener shortener) throws ShortifyException {
         Matcher m = URL_PATTERN.matcher(message);
         String urlTmp;
         List<String> urls = new ArrayList<>();
@@ -172,7 +163,7 @@ public class ShortifyUtility {
         }
         if (c.getString("shortener").equals("bitly")
                 && (c.getString("bitlyUSER").equals("none") || c.getString(
-                "bitlyAPI").equals("none"))) {
+                        "bitlyAPI").equals("none"))) {
             l.info("bit.ly is not properly configured in config.yml.");
             l.info("Reverting to default shortener is.gd.");
             c.set("shortener", "isgd");

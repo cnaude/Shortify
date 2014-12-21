@@ -8,7 +8,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.Metrics;
 
 import java.io.IOException;
 
@@ -27,15 +26,7 @@ public final class Shortify extends JavaPlugin {
         }
         shortenerManager = ShortifyUtility.setupShorteners();
         ShortifyUtility.reloadConfigShorteners(shortenerManager, configuration);
-        ShortifyUtility.verifyConfiguration(configuration, getLogger());
-        if (configuration.getBoolean("metrics")) {
-            try {
-                ShortifyUtility.setupMetrics(new Metrics(this), configuration);
-                getLogger().info("Metrics setup.");
-            } catch (IOException e) {
-                getLogger().warning("Unable to set up Metrics.");
-            }
-        }
+        ShortifyUtility.verifyConfiguration(configuration, getLogger());        
         listener = new ShortifyListener(this);
         getServer().getPluginManager().registerEvents(listener, this);
         getServer().getPluginManager().registerEvents(new ShortifyCommandListener(this), this);
