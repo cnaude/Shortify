@@ -9,7 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.IOException;
 
 public final class Shortify extends JavaPlugin {
 
@@ -21,9 +20,6 @@ public final class Shortify extends JavaPlugin {
     public void onEnable() {
         // Load config.yml with snakeyaml
         configuration = ShortifyUtility.loadCfg(getFile());
-        if (configuration.getBoolean("update")) {
-            new Updater(this, 46984, this.getFile(), Updater.UpdateType.DEFAULT, false);
-        }
         shortenerManager = ShortifyUtility.setupShorteners();
         ShortifyUtility.reloadConfigShorteners(shortenerManager, configuration);
         ShortifyUtility.verifyConfiguration(configuration, getLogger());        
@@ -40,6 +36,7 @@ public final class Shortify extends JavaPlugin {
         shortenerManager = null;
     }
 
+    @Override
     public boolean onCommand(CommandSender sender, Command command,
                              String commandLabel, String[] args) {
         // Check for permissions

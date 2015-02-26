@@ -10,22 +10,22 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class ShortifyCommandListener implements Listener {
 
-    private Shortify plugin;
+    private final Shortify plugin;
 
-    public ShortifyCommandListener(Shortify pl) {
-        plugin = pl;
+    public ShortifyCommandListener(Shortify plugin) {
+        this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.LOW)
-    public void playerCommand(PlayerCommandPreprocessEvent e) {
-        if (e.getPlayer().hasPermission("shortify.shorten.cmd")) {
+    public void playerCommand(PlayerCommandPreprocessEvent event) {
+        if (event.getPlayer().hasPermission("shortify.shorten.cmd")) {
             try {
-                e.setMessage(ShortifyUtility.shortenAll(
-                        e.getMessage(),
+                event.setMessage(ShortifyUtility.shortenAll(
+                        event.getMessage(),
                         Integer.valueOf(Shortify.getConfiguration().getString("minlength", "20")),
                         ShortifyUtility.getShortener(Shortify.getConfiguration()), ""));
 
-            } catch (NumberFormatException e1) {
+            } catch (NumberFormatException ex) {
                 plugin.getServer().getConsoleSender()
                         .sendMessage(
                                 ChatColor.RED

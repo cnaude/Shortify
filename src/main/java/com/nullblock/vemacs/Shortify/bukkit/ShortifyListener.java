@@ -21,7 +21,7 @@ import java.util.Set;
 
 public class ShortifyListener implements Listener {
 
-    private Shortify plugin;
+    private final Shortify plugin;
 
     public ShortifyListener(Shortify Shortify) {
         plugin = Shortify;

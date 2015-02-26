@@ -27,7 +27,6 @@ public class ShortifyUtility {
         sm.registerShortener("niggr", new ShortenerNigGr());
         sm.registerShortener("safemn", new ShortenerSafeMn());
         sm.registerShortener("tinyurl", new ShortenerTinyUrl());
-        //sm.registerShortener("tx0", new ShortenerTx0());
         sm.registerShortener("yu8me", new ShortenerYu8Me());
         return sm;
     }
@@ -60,6 +59,7 @@ public class ShortifyUtility {
      * @param txt
      * @param minln
      * @param shortener
+     * @param prefix
      * @return
      * @throws ShortifyException
      */
@@ -104,9 +104,11 @@ public class ShortifyUtility {
 
     /**
      *
+     * @param config
+     * @return
      */
-    public static Shortener getShortener(CommonConfiguration c) {
-        return Shortify.getShortenerManager().getShortener(c.getString("shortener"));
+    public static Shortener getShortener(CommonConfiguration config) {
+        return Shortify.getShortenerManager().getShortener(config.getString("shortener"));
     }
 
     public static String classicUrlShorten(String message, int minln,
@@ -154,41 +156,40 @@ public class ShortifyUtility {
         return new String(chrarray);
     }
 
-    public static void verifyConfiguration(CommonConfiguration c, Logger l) {
-        if (!(c.getString("mode").equals("replace") || c.getString("mode")
+    public static void verifyConfiguration(CommonConfiguration config, Logger logger) {
+        if (!(config.getString("mode").equals("replace") || config.getString("mode")
                 .equals("classic"))) {
-            l.info("Mode not configured correctly!");
-            l.info("Reverting to replace mode.");
-            c.set("mode", "replace");
+            logger.info("Mode not configured correctly!");
+            logger.info("Reverting to replace mode.");
+            config.set("mode", "replace");
         }
-        if (c.getString("shortener").equals("bitly")
-                && (c.getString("bitlyUSER").equals("none") || c.getString(
+        if (config.getString("shortener").equals("bitly")
+                && (config.getString("bitlyUSER").equals("none") || config.getString(
                         "bitlyAPI").equals("none"))) {
-            l.info("bit.ly is not properly configured in config.yml.");
-            l.info("Reverting to default shortener is.gd.");
-            c.set("shortener", "isgd");
+            logger.info("bit.ly is not properly configured in config.yml.");
+            logger.info("Reverting to default shortener is.gd.");
+            config.set("shortener", "isgd");
         }
-        if (c.getString("shortener").equals("yourls")
-                && (c.getString("yourlsUSER").equals("none")
-                || c.getString("yourlsURI").equals("none") || c
+        if (config.getString("shortener").equals("yourls")
+                && (config.getString("yourlsUSER").equals("none")
+                || config.getString("yourlsURI").equals("none") || config
                 .getString("yourlsPASS").equals("none"))) {
-            l.info("YOURLS is not properly configured in config.yml.");
-            l.info("Reverting to default shortener is.gd.");
-            c.set("shortener", "isgd");
+            logger.info("YOURLS is not properly configured in config.yml.");
+            logger.info("Reverting to default shortener is.gd.");
+            config.set("shortener", "isgd");
         }
-        if (c.getString("shortener").equals("googl")
-                && c.getString("googAPI").equals("none")) {
-            l.info("goo.gl is not properly configured in config.yml.");
-            l.info("Reverting to default shortener is.gd.");
-            c.set("shortener", "isgd");
+        if (config.getString("shortener").equals("googl")
+                && config.getString("googAPI").equals("none")) {
+            logger.info("goo.gl is not properly configured in config.yml.");
+            logger.info("Reverting to default shortener is.gd.");
+            config.set("shortener", "isgd");
         }
     }
 
-    public static CommonConfiguration loadCfg(File pl) {
+    public static CommonConfiguration loadCfg(File file) {
         CommonConfiguration c = new CommonConfiguration();
         c.addDefault("mode", "replace");
         c.addDefault("shortener", "isgd");
-        c.addDefault("auto-update", "true");
         c.addDefault("prefix", "&n");
         c.addDefault("minlength", "20");
         c.addDefault("googAPI", "none");
@@ -198,7 +199,7 @@ public class ShortifyUtility {
         c.addDefault("yourlsUSER", "none");
         c.addDefault("yourlsPASS", "none");
 
-        File dataDir = new File(pl.getParent() + "/Shortify");
+        File dataDir = new File(file.getParent());
         File cfg = new File(dataDir, "config.yml");
         try {
             dataDir.mkdirs();
@@ -215,8 +216,8 @@ public class ShortifyUtility {
         return c;
     }
 
-    public static void dumpData(File pl, CommonConfiguration c) {
-        File dataDir = new File(pl.getParent() + "/Shortify");
+    public static void dumpData(File file, CommonConfiguration c) {
+        File dataDir = new File(file.getParent());
         try {
             new File(dataDir, "config.yml").createNewFile();
             c.dumpYaml(new File(dataDir, "config.yml"));

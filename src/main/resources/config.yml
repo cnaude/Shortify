@@ -24,10 +24,6 @@ yourlsURI: none
 yourlsUSER: none
 yourlsPASS: none
 minlength: 20
-# toggles if Shortify should automatically update
-auto-update: true
 # classic: displays URLs
 # replace: usual, replaces shortened URLs
 mode: replace
-# Enables or disables Metrics
-metrics: true
